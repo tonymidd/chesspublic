@@ -1,24 +1,24 @@
 /**
- * 牌组牌坐标排序管理
+ * <已打出的牌><左边>牌组牌<坐标排序>
  * author:tony
  * time : 2017/03/24
  */
-var BaseCardGroupPosSort = require('./../BaseCardGroupPosSort');
+var OutPosSort = require('./OutPosSort');
 cc.Class({
-    extends: BaseCardGroupPosSort,
+    extends: OutPosSort,
 
     properties: {
         
     },  
 
     onLoad: function () {        
-        this.posList = [];
+        this._super();
     },
 
     
     /***重新计算坐标 */
     reRefresh:function(){
-
+        this._super();
     },
 
     /***在最末尾新增一个坐标 */
