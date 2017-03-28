@@ -23,15 +23,15 @@ module.exports = cc.Class({
 
     onLoad: function () {                     
         //卡牌数据集合
-        this.cards = [];  
-        //当前选中的单牌pos
-        this.currChoicPos = -1;
+        this.cards = [];      
         //监听点击到mainPanel事件
-        this.touchMainPanelEve = null; 
-        
+        this.touchMainPanelEve = null;
+
+        //存储单个对象数据         
         this.cardViewCtrList = new Map(); 
     }, 
 
+    /***获取单个卡组对象的预设名字 */
     getSingleCardPrefabName : function(){
         //子类实现
     },

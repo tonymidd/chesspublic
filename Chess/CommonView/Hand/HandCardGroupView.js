@@ -7,7 +7,14 @@ var BaseCardGroupView = require('./../BaseCardGroupView');
 var _ = require('underscore');
 var CardViewCtr = require('./../CardViewCtr');
 window.HandCardGroupView=cc.Class({
+    
     extends: BaseCardGroupView,
+
+    onLoad: function () {                     
+        this._super();
+        //当前选中的单牌pos
+        this.currChoicPos = -1; 
+    }, 
 
      /***出牌处理 */
     outCard : function( card ){
@@ -19,27 +26,6 @@ window.HandCardGroupView=cc.Class({
      * 创建对象由子类自己实现
      */
     addCard:function( card , cb ){ 
-        this._super(card , cb);
-        // var self = this;
-        // this.cards.push( { pos:card.pos , card:card } ); 
-        // if( ConstsClient.SEAT_DIRECTION.SELF == this.getSeatDirection() ) {
-        //     UtilGameObject.createAddparent( 'prefabs/mahjong/handCardMjSelf' , this.node ,function(obj){      
-                 
-        //         var singleCardView = obj.getComponent('BaseSingleCardView');
-
-        //         if(!!cb){
-        //             singleCardView.ListerTouch( cb );
-        //         } 
-
-        //         singleCardView.setCard( card );  
-
-        //         var position = self.posSortCtr.getPosByIdx(_.size(self.cardViewCtrList));
-
-        //         singleCardView.setPosition( position );
-
-        //         self.cardViewCtrList[card.pos] = new CardViewCtr(obj,singleCardView,card);
-                               
-        //     });  
-        // }
+        this._super(card , cb); 
     },
 });

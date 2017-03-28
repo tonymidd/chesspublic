@@ -14,13 +14,15 @@ module.exports =  cc.Class({
         this.cbList[actionTypeLister].cb  = cb;
     },
 
+    /***通过监听类型移除监听 */
     removeLister : function( actionTypeLister ){
         if( null == this.cbList ){
             return;
         }
-        this.cbList[actionTypeLister]  = cb;
+        this.cbList[actionTypeLister]  = null;
     }, 
 
+    /***清空监听 */
     removeAllLister : function(  ){
         if( null == this.cbList ){
             return;

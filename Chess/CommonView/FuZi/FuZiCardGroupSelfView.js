@@ -7,14 +7,16 @@ var FuZiCardGroupView= require('./FuZiCardGroupView');
 cc.Class({
     extends: FuZiCardGroupView,
     
-    // addCardGroup:function( data ){
-    //     this._super( data );
-
-    //     console.log('addCardGroup data %s ',JSON.stringify(data));
-    // },
-
     getPrefabNameByType:function(type){
         this._super(type);
         return 'prefabs/mahjong/fuZiGroupSelf';
-    }
+    },
+
+    /**
+     * 座位方向
+    */
+    getSeatDirection : function(){
+        this._super();
+        return ConstsClient.SEAT_DIRECTION.SELF;
+    },
 });

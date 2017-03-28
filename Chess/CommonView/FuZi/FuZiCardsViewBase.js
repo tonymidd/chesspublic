@@ -30,7 +30,14 @@ module.exports = cc.Class({
         this.fuziCardData = null;
     },
 
-    resetData:function(){
+    /***重置数据
+     * data:为一个数据结构体
+     */
+    resetData:function(data){
+
+    },
+
+    setPosition : function(position){
 
     }
 });
