@@ -38,6 +38,6 @@ module.exports = cc.Class({
     },
 
     setPosition : function(position){
-
+        this.node.setPosition(position);
     }
 });

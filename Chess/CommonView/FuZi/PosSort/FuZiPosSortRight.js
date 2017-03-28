@@ -3,9 +3,9 @@
  * author:tony
  * time : 2017/03/24
  */
-var FuZiCardGroupPosSort = require('./FuZiCardGroupPosSort');
+var FuZiPosSort = require('./FuZiPosSort');
 cc.Class({
-    extends: FuZiCardGroupPosSort,
+    extends: FuZiPosSort,
 
     properties: {
         

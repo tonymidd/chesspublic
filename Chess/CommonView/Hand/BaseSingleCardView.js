@@ -3,7 +3,7 @@
  * author:tony
  * time : 2017/03/24
  */
-var EnumHandCardState = require('./../../../Enum/EnumHandCardState');
+//var EnumHandCardState = require('./../../Enum/EnumHandCardState');
 var PlanMjConfig =  require('./../../../MgData/PlanData/PlanMjConfig');
 module.exports = cc.Class({
     extends: cc.Component,

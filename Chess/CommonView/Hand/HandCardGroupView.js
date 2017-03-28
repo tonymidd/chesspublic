@@ -4,8 +4,7 @@
  * time : 2017/03/24
  */
 var BaseCardGroupView = require('./../BaseCardGroupView');
-var _ = require('underscore');
-var CardViewCtr = require('./../CardViewCtr');
+var _ = require('underscore'); 
 window.HandCardGroupView=cc.Class({
     
     extends: BaseCardGroupView,

@@ -25,7 +25,7 @@ module.exports = cc.Class({
     /***重新计算坐标 
      * needCnt:重新排位的数目*/ 
     reRefresh:function( needCnt ){
-        
+        //子类实现
     },
 
     /***在最末尾新增一个坐标 

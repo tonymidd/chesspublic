@@ -34,12 +34,12 @@ cc.Class({
     /***获取节点与节点间的间距 */
     getSpaceSize : function(){
         this._super();
-        return { width : 53 , height : 0 };
+        return { width : 86 , height : 0 };
     },
 
     /***获取首个节点位置 */
     getFristPos:function(){
         this._super();
-        return { x : -480 , y : 90 };
+        return { x : 0 , y : 88 };
     }     
 });

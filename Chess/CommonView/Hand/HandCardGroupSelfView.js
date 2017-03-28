@@ -4,7 +4,7 @@
  * time : 2017/03/24
  */
 var _ = require('underscore');
-var EnumHandCardState = require('./../../../Enum/EnumHandCardState');
+//var EnumHandCardState = require('./../../../Enum/EnumHandCardState');
 cc.Class({
     extends: HandCardGroupView,
 

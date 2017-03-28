@@ -5,7 +5,7 @@
  * 描述 : 处理单牌表现逻辑
  */
 var BaseSingleCardView = require('./BaseSingleCardView');
-var EnumHandCardState = require('./../../../Enum/EnumHandCardState');
+//var EnumHandCardState = require('./../../../Enum/EnumHandCardState');
 cc.Class({
 
     extends: BaseSingleCardView,

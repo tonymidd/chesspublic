@@ -3,8 +3,7 @@
  * author:tony
  * time : 2017/03/24
  */
-var OutCardGroupView = require('./OutCardGroupView');
-var CardViewCtr = require('./../CardViewCtr');
+var OutCardGroupView = require('./OutCardGroupView'); 
 var _ = require('underscore');
 cc.Class({
 

@@ -34,7 +34,7 @@ cc.Class({
     /***获取节点与节点间的间距 */
     getSpaceSize : function(){
         this._super();
-        return { width : 53 , height : 0 };
+        return { width : 40 , height : 0 };
     },
 
     /***获取首个节点位置 */

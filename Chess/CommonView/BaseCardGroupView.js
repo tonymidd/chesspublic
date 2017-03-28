@@ -5,7 +5,7 @@
  */
 var BaseCardGroupPosSort = require('./BaseCardGroupPosSort');
 var AgencyActionLister= require('./AgencyActionLister');
-var CardViewCtr = require('./CardViewCtr');
+var CardViewCtr = require('./BaseSingleDataViewCtr');
 var _ = require('underscore');
 module.exports = cc.Class({
     extends: cc.Component,
@@ -46,7 +46,7 @@ module.exports = cc.Class({
         if( ConstsClient.SEAT_DIRECTION.SELF == this.getSeatDirection() ) {
             UtilGameObject.createAddparent( this.getSingleCardPrefabName() , this.node ,function(obj){      
                  
-                var singleCardView = obj.getComponent('BaseSingleCardView');
+                var singleCardView = obj.getComponent('SingleHandCardView');
 
                 if(!!cb){
                     singleCardView.ListerTouch( cb );
@@ -55,10 +55,12 @@ module.exports = cc.Class({
                 singleCardView.setCard( card );  
 
                 var position = self.posSortCtr.getPosByIdx(_.size(self.cardViewCtrList));
-
+                
                 singleCardView.setPosition( position );
 
-                self.cardViewCtrList[card.pos] = new CardViewCtr(obj,singleCardView,card);
+                var tmp =  new CardViewCtr();
+                tmp.setObj(obj).setCtr(singleCardView).setData(card);
+                self.cardViewCtrList[card.pos] = tmp;
                                
             });  
         }
@@ -98,7 +100,7 @@ module.exports = cc.Class({
 
     getCardViewByPos : function( pos ){
         return _.find(this.cardViewCtrList,function( viewData ){
-            return viewData.card.pos == pos;
+            return viewData.getPos() == pos;
         });
     },
 
@@ -107,7 +109,7 @@ module.exports = cc.Class({
         tmp.obj.destroy();   
         tmp  = null;
         this.cardViewCtrList = _.reject(this.cardViewCtrList,function(viewData){
-            return viewData.card.pos == pos;
+            return viewData.getPos() == pos;
         });  
     }
 });

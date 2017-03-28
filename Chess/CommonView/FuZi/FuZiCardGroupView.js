@@ -6,7 +6,7 @@
 
 var BaseCardGroupView = require('./../BaseCardGroupView');
 var FuZiSingCardGroupViewCtr = require('./FuZiSingCardGroupViewCtr');
-
+var _ = require('underscore');
 cc.Class({
     extends: BaseCardGroupView, 
 
@@ -20,7 +20,7 @@ cc.Class({
                var idx = self.getGroupCnt();
                var position = self.posSortCtr.getPosByIdx(idx);
                cardsView.setPosition(position);
-
+               console.log('fuzi position = %s',JSON.stringify(position) );
                self.cardGroupViewCtrList[idx] = new FuZiSingCardGroupViewCtr( obj , cardsView , data );
         });  
        
@@ -55,6 +55,7 @@ cc.Class({
      * 获取当前组的数量
      */
     getGroupCnt:function(){
-        return _.size(this.cardGroupViewList);
+        console.log( '-------- -获取当前组的数量--  '+_.size(this.cardGroupViewCtrList));
+        return _.size(this.cardGroupViewCtrList);
     }
 });

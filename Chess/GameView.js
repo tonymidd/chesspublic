@@ -1,3 +1,4 @@
+var BaseRoomView = require('./CommonView/BaseRoomView');
 cc.Class({
     extends: BaseRoomView,
 
