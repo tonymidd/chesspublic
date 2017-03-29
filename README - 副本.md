@@ -1,2 +1,0 @@
-# chesspublic
-中转
