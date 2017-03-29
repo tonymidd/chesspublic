@@ -1,0 +1,4 @@
+var GameDataCtr = function(){
+
+};
+
