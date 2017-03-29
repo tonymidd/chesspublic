@@ -22,7 +22,11 @@ module.exports =  cc.Class({
     },  
 
     /***刷新界面 */
-    refresh:function( cardData ){
-        this.cardData = cardData;
-    },    
+    refresh:function( cardId ){
+        this.cardId = cardId;
+    }, 
+
+    setPosition:function( position ){
+        this.node.setPosition(position);
+    }   
 });
