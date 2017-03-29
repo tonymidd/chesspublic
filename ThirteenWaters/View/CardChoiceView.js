@@ -21,13 +21,13 @@ module.exports =  cc.Class({
         this.eveLister.addLister(EnumTouchAction.PUT_DOWN,this.putDown,self);
     },
 
-    /**拾起 */
+    /**选择一张牌拾起时 */
     pickUpCard:function( data,self ){
 
     },
 
-    /**放下 */
+    /**将拿起一张牌放下 */
     putDown:function( data , self ){
-
+        
     }
 });
