@@ -5,6 +5,7 @@
  */
 var _ = require('underscore');
 var EveViewLister = require('./EveViewLister');
+var EnumTouchAction = require('./../EnumTouchAction');
 module.exports =  cc.Class({
     extends: cc.Component,
 
@@ -22,6 +23,8 @@ module.exports =  cc.Class({
         this.eveLister.addLister(EnumTouchAction.PUT_DOWN,function(cardId,self){
             self.addCard(cardId);
         },this);
+
+        this.addCards([1,2,3,4,5,6,7]);
     },
 
     addCards : function(cards){
@@ -34,11 +37,16 @@ module.exports =  cc.Class({
     /*** */
     addCard: function(cardId){
          var self = this;
-         UtilGameObject.createAddparent( '' , this.node ,function(obj){ 
+         UtilGameObject.createAddparent( 'prefabs/thirteenWaters/cardTouch' , this.node ,function(obj){ 
              var cardView = obj.getComponent('CardView');
              cardView.refresh( cardId ); 
              cardView.setPosition( self.getPosition() );  
+             cardView.setTouchCallFn( function(cbCardId){
+                console.log('cbCardId:'+cbCardId);
+             });
+
              self.singleCardSize = obj.getContentSize();
+             
              self.cardList.push( {cardId:cardId,cardView:cardView,obj:obj});
          })   
     },
@@ -56,7 +64,7 @@ module.exports =  cc.Class({
     },
 
     getFristPosition : function(){
-        return {x:1,y:1};
+        return {x:-320,y:150};
     },
 
     getSingleCardSize: function(){
@@ -65,7 +73,7 @@ module.exports =  cc.Class({
 
     getPosition : function(){
         var fristPosition = this.getFristPosition(); 
-        return {x:fristPosition.x + this.getCardCnt()*this.singleCardSize.width,y:fristPosition.y};
+        return {x:fristPosition.x + this.getCardCnt()*(this.singleCardSize.width+10),y:fristPosition.y};
     },
 
     getCardCnt : function(){
