@@ -7,6 +7,8 @@ var _ = require('underscore');
 var EveViewLister = require('./EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); 
+ 
+
 module.exports =  cc.Class({
     extends: cc.Component,
 
@@ -21,13 +23,25 @@ module.exports =  cc.Class({
         },            
     },  
 
+    /**选择一张牌拾起时 */
+    pickUpCard:function( data,self ){
+
+    },
+
+    /**将拿起一张牌放下 */
+    putDown:function( data , self ){
+        self.addCard(cardId);
+    },
+
     onLoad:function(){
+
         this.cardList = [];
+
         this.singleCardSize = {width:20,height:20};
 
-        this.eveLister.addLister(EnumTouchAction.PUT_DOWN,function(cardId,self){
-            self.addCard(cardId);
-        },this);
+        this.eveLister.addLister(EnumTouchAction.PUT_DOWN,this.putDown,this);
+
+        this.eveLister.addLister(EnumTouchAction.PICK_UP,this.pickUpCard,this); 
 
         this.addCards([1,2,3,4,5,6,7]);
     },
@@ -62,8 +76,7 @@ module.exports =  cc.Class({
             return cardId == data.cardId;
         })
 
-        dataJson.destory();
-
+        dataJson.destory(); 
         this.cardList = _.reject(  this.cardList , function(data){
             return cardId == data.cardId;
         }); 
