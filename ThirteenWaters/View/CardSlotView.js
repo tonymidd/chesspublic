@@ -12,6 +12,6 @@ module.exports =  cc.Class({
 
     /*** */
     addCard: function(card,line){
-
+        
     }
 });
