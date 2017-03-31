@@ -3,25 +3,18 @@
  * author:tony
  * time : 2017/03/24
  */
+var BaseObject = require( './../../Public/BaseObject' );
+var util = require('util');
 var SingleCardViewData = function(){ 
     
-}
+} 
+
+util.inherits(SingleCardViewData,BaseObject);
 
 var pro = SingleCardViewData.prototype;
 
-pro.setData = function( data ){
-    this.data = data;
-    return this;
-}
- 
-pro.setCtr = function( ctr ){
-    this.ctr = ctr;
-    return this;
-}
-
-pro.setObj = function( obj ){
-    this.obj = obj;
-    return this;
-}
+pro.getCardId = function(){
+    return this.data;
+};
 
 module.exports = SingleCardViewData;

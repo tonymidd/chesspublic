@@ -12,16 +12,19 @@ var pro = BaseObject.prototype;
 pro.setData = function( data ){
     this.data = data;
     return this;
-}
+};
  
 pro.setCtr = function( ctr ){
     this.ctr = ctr;
     return this;
-}
+};
 
 pro.setObj = function( obj ){
     this.obj = obj;
     return this;
-}
+};
 
+pro.destory = function(){
+    this.obj.destory();
+};
 module.exports = BaseObject;

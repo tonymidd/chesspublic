@@ -7,8 +7,8 @@ var _ = require('underscore');
 var EveViewLister = require('./EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); 
- 
-
+var SingleCardViewData = require('./../ViewData/SingleCardViewData'); 
+var SingleCardViewDataGroup = require('./../ViewData/SingleCardViewDataGroup'); 
 module.exports =  cc.Class({
     extends: cc.Component,
 
@@ -35,7 +35,7 @@ module.exports =  cc.Class({
 
     onLoad:function(){
 
-        this.cardList = [];
+        this.cardViewDataGroup = new SingleCardViewDataGroup();
 
         this.singleCardSize = {width:20,height:20};
 
@@ -67,19 +67,16 @@ module.exports =  cc.Class({
 
              self.singleCardSize = obj.getContentSize();
              
-             self.cardList.push( {cardId:cardId,cardDragView:cardDragView,obj:obj} );
+             var tmp = new SingleCardViewData();
+             tmp.setData(cardId);
+             tmp.setCtr(cardDragView);
+             tmp.setObj(obj); 
+             self.cardViewDataGroup.add(tmp );
          })   
     },
 
     removeByCardId : function( cardId ){
-        var dataJson = _.find( this.cardList , function(data){
-            return cardId == data.cardId;
-        })
-
-        dataJson.destory(); 
-        this.cardList = _.reject(  this.cardList , function(data){
-            return cardId == data.cardId;
-        }); 
+        this.cardViewDataGroup.remove( cardId );
     },
 
     getFristPosition : function(){
@@ -96,6 +93,6 @@ module.exports =  cc.Class({
     },
 
     getCardCnt : function(){
-       return _.size(this.cardList);
+       return this.cardViewDataGroup.getSize();
     }
 });
