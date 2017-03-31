@@ -1,5 +1,5 @@
 /**
- * 拖动碰撞
+ * 拖动碰撞检查
  * author:tony
  * time : 2017/03/24
  */
@@ -12,8 +12,7 @@ module.exports =  cc.Class({
         group:[cc.Node], 
     },  
 
-    onLoad:function(){
-        
+    onLoad:function(){ 
         this.groupLength = this.group.length;
         var posList = [];
         posList.push({});
@@ -40,7 +39,7 @@ module.exports =  cc.Class({
      *          -1：没有找到碰撞区域
      *          1到groupLength 检查到碰撞
      */
-    checkTouchPos : function( position ){ 
+    doCheck : function( position ){ 
         var x = position.x;
         var y = position.y; 
         var i = 1;        
