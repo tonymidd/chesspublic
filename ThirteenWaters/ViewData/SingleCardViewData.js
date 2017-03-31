@@ -1,20 +1,17 @@
 /**
- * 卡槽管理
+ *  可见对象数据
  * author:tony
  * time : 2017/03/24
  */
 var BaseObject = require( './../../Public/BaseObject' );
-var util = require('util');
-var SingleCardViewData = function(){ 
+module.exports =  cc.Class({ 
     
-} 
+    extends: BaseObject,
 
-util.inherits(SingleCardViewData,BaseObject);
-
-var pro = SingleCardViewData.prototype;
-
-pro.getCardId = function(){
-    return this.data;
-};
-
-module.exports = SingleCardViewData;
+    getCardId : function(){
+        return this.cardId;
+    },
+    setCardId : function(v){
+        this.cardId = v;
+    },
+}); 

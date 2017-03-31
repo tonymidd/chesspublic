@@ -4,29 +4,23 @@
  * time : 2017/03/24
  */
 var BaseObjectGroup = require( './../../Public/BaseObjectGroup' );
-var util = require('util');
-var SingleCardViewDataGroup = function(){ 
-    this.list = [];
-}
-util.inherits(SingleCardViewDataGroup,BaseObjectGroup);
-
-var pro = SingleCardViewDataGroup.prototype;
- 
-
-/**
- * 通过key移除一个数据
- * key : 一个钥匙 （注意此key不是唯一的 数组中有可能存在多个同样的key）
- */
-pro.remove = function( key ){
-    var _object = _.find( this.list , function(tmpObject){
-        return key == tmpObject.getCardId();
-    })
-
-    _object.destory(); 
+module.exports =  cc.Class({
     
-    this.list = _.reject(  this.list , function(data){
-        return key == data.cardId;
-    });
-};
+    extends: BaseObjectGroup,  
+    /**
+     * 通过key移除一个数据
+     * key : 一个钥匙 （注意此key不是唯一的 数组中有可能存在多个同样的key）
+     */
+    remove : function( key ){
+        this._super( key );
+        var _object = _.find( this.list , function(tmpObject){
+            return key == tmpObject.getCardId();
+        })
 
-module.exports = SingleCardViewDataGroup;
+        _object.destory(); 
+        
+        this.list = _.reject(  this.list , function(data){
+            return key == data.cardId;
+        });
+    }
+});

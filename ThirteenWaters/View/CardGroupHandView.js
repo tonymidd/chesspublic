@@ -65,12 +65,10 @@ module.exports =  cc.Class({
                 console.log('cbCardId:'+cbCardId);
              });
 
-             self.singleCardSize = obj.getContentSize();
-             
-             var tmp = new SingleCardViewData();
-             tmp.setData(cardId);
+             self.singleCardSize = obj.getContentSize();             
+             var tmp = obj.getComponent('SingleCardViewData');
+             tmp.setCardId(cardId);
              tmp.setCtr(cardDragView);
-             tmp.setObj(obj); 
              self.cardViewDataGroup.add(tmp );
          })   
     },
