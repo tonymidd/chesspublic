@@ -1,5 +1,5 @@
 /**
- * 手牌显示区
+ * 卡槽显示区
  * author:tony
  * time : 2017/03/24
  */
@@ -27,16 +27,7 @@ module.exports =  cc.Class({
         this.eveLister.addLister(EnumTouchAction.PUT_DOWN,this.putDown,this);
 
         this.eveLister.addLister(EnumTouchAction.PICK_UP,this.pickUpCard,this); 
-
-        this.addCards([1,2,3,4,5,6,7]);
-    },
-
-    addCards : function(cards){
-        var self = this;
-        _.each( cards , function(cardId){
-            self.addCard( cardId );
-        }) 
-    },
+    },    
 
     /***添加一张牌 */
     addCard: function(cardId){

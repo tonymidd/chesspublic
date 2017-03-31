@@ -1,5 +1,5 @@
 /**
- * 可拖拽牌
+ * 可拖拽牌且可碰撞
  * author:tony
  * time : 2017/03/24
  */
@@ -31,34 +31,32 @@ module.exports =  cc.Class({
         this.bfPositionOffset = {x:0,y:0};
 
         //点下去事件处理
-        this.node.on(cc.Node.EventType.TOUCH_START,function(event){
-            //console.log('TOUCH_START');
+        this.node.on(cc.Node.EventType.TOUCH_START,function(event){            
             var tempPlayer = self.node.parent.convertToNodeSpaceAR(event.getLocation());
             var bfCardPosition = self.getPosition();
             self.bfPositionOffset = {x:(tempPlayer.x-bfCardPosition.x),y:(tempPlayer.y-bfCardPosition.y) };
         })
 
         //移动事件处理
-        this.node.on(cc.Node.EventType.TOUCH_MOVE   ,function(event){
-            //console.log('TOUCH_MOVE   ',JSON.stringify(event.getLocation()));
+        this.node.on(cc.Node.EventType.TOUCH_MOVE   ,function(event){            
             var tempPlayer = self.node.parent.convertToNodeSpaceAR(event.getLocation());
             var tmpCardPostion = {x:(tempPlayer.x-self.bfPositionOffset.x),y:(tempPlayer.y-self.bfPositionOffset.y) };
             self.setPosition(tmpCardPostion);
         }) 
 
         //松开事件处理
-        this.node.on(cc.Node.EventType.MOUSE_UP  ,function(event){
-            //console.log('MOUSE_UP');
+        this.node.on(cc.Node.EventType.MOUSE_UP  ,function(event){            
             var worldPosition = self.node.parent.convertToNodeSpaceAR(event.getLocation());            
-            var checkValue = self.collisionCtr.doCheck( worldPosition );
+            
+            //{line:1,lattice:1};
+            var checkInfo = self.collisionCtr.doCheck( worldPosition );
             
             //复位
-            if( -1 == checkValue ){ 
+            if( null == line ){ 
                 self.setPosition(self.bfPositionOffset);
             }else{
-                self.touchCb( self.cardId , checkValue );
+                self.touchCb( self.cardId , checkInfo );
             } 
         })         
     } 
-
 });
