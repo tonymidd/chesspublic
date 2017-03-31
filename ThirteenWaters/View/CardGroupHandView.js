@@ -67,7 +67,7 @@ module.exports =  cc.Class({
 
              self.singleCardSize = obj.getContentSize();
              
-             self.cardList.push( {cardId:cardId,cardDragView:cardDragView,obj:obj});
+             self.cardList.push( {cardId:cardId,cardDragView:cardDragView,obj:obj} );
          })   
     },
 
