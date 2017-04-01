@@ -93,4 +93,10 @@ module.exports =  cc.Class({
         return [[1,2,3],[1,2,3,4,5],[1,2,3,4,5]]
     },
      
+    /***是否可以添加或者更换牌 
+     * data : {cardId:1,checkInfo:{line:1,Lattice:1}}
+    */
+    isCanAddOrSwitch : function(data){
+        return false;
+    }
 });

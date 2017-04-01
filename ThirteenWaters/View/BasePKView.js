@@ -20,20 +20,33 @@ module.exports =  cc.Class({
             default:null
         },
     },  
-
+    onLoad:function(){
+        //子类实现
+    },
     /***刷新界面 */
     refresh:function( cardId ){
         this.cardId = cardId;
+        return this;
     }, 
 
     setPosition:function( position ){
         this.node.setPosition(position);
+        return this;
     },
 
-    getPosition:function(  ){
+    getPosition:function(){
        return this.node.getPosition();
     },  
-    onLoad:function(){
-        //子类实现
-    }  
+
+    /**
+     * 设置卡牌id
+     */ 
+    setCardId:function(v){
+        this.cardId = v;
+    },
+
+    /***获取id */
+    getCardId:function(){
+        return this.cardId;
+    }
 });

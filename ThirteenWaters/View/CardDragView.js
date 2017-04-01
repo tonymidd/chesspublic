@@ -6,24 +6,18 @@
 
 var BasePKView = require('./BasePKView');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); //做碰撞检查
-
+var EnumCardAreaType = require('./EnumCardAreaType');
+var EnumTouchAction = require('./../EnumTouchAction');
 module.exports =  cc.Class({
     extends: BasePKView,
 
-    /***将有效的拖到报告给管理层
-     * cb(cardId,line)
-     *    cardId:卡牌id
-     *    line  :所在行  
-     */
-    setTouchCallFn:function( cb ){
-        this.touchCb = cb;
-    },
-
-    /***设置拖拽对象 */
-    setCollisionCheckCtr:function(ctr){
-        this.collisionCtr = ctr;
-    },
-   
+    properties: {
+        cardAreaType:{
+            type:EnumCardAreaType,
+            default:EnumCardAreaType.HAND
+        }
+    },  
+ 
     onLoad:function(){ 
         var self = this; 
 
@@ -52,11 +46,49 @@ module.exports =  cc.Class({
             var checkInfo = self.collisionCtr.doCheck( worldPosition );
             
             //复位
-            if( null == line ){ 
+            if( false == self.calcEffectiveAction( checkInfo ) ){ 
                 self.setPosition(self.bfPositionOffset);
-            }else{
-                self.touchCb( self.cardId , checkInfo );
-            } 
+            }
         })         
-    } 
+    },
+    
+
+    /***设置拖拽对象 */
+    setCollisionCheckCtr:function(ctr){
+        this.collisionCtr = ctr;
+        return this;
+    },
+
+    /**
+     * 设置卡牌所在牌区域
+     */ 
+    setCardAreaType:function(v){
+        this.cardAreaType = v;
+        return this;
+    },
+
+    /***设置报告消息接口 （向此脚本的动作报告给其管理者） */
+    setEveLister:function(eveLister){
+        this.eveLister = eveLister;
+    },
+
+    /***设置卡槽数据管理对象 */
+    setCardSlotDataMG:function( v ){
+        this.cardSlotDataMG = v;
+    },
+    /***计算有效动作 */
+    calcEffectiveAction:function(checkInfo){
+        if(null == checkInfo){
+            return false;
+        }
+        if( EnumCardAreaType.HAND == this.cardAreaType ){
+            if( false == this.cardSlotDataMG.isCanAddOrSwitch() ){
+                self.eveLister.doDataToLister(EnumTouchAction.HAND_PICK_UP,{cardId:self.getCardId(),checkInfo:checkInfo})
+            }else{
+                return false;
+            }
+        }else{
+            self.eveLister.doDataToLister(EnumTouchAction.SOLT_PICK_UP,{cardId:self.getCardId(),checkInfo:checkInfo})
+        }   
+    }
 });

@@ -8,6 +8,8 @@ var EveViewLister = require('./EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); 
 var BaseObjectGroup = require( './../../Public/BaseObjectGroup' );
+var CardSlotDataMG = require('./../Data/CardSlotDataMG');
+
 module.exports =  cc.Class({
     extends: cc.Component,
 
@@ -26,7 +28,12 @@ module.exports =  cc.Class({
             default:null,
             type:BaseObjectGroup,
             displayName:'界面数据集合 BaseObjectGroup'
-        },     
+        }, 
+        cardSlotDataMG : {            
+            default:null,
+            type:CardSlotDataMG,
+            displayName:'纯卡槽数据 CardSlotDataMG'
+        },
     },  
     onLoad:function(){
  
@@ -57,14 +64,30 @@ module.exports =  cc.Class({
         this.objectGroup.remove( cardId );
     },
 
+    /***添加一张牌 */
+    addCard: function(cardId){  
+         var self = this;
+         UtilGameObject.createAddparent( 'prefabs/thirteenWaters/cardTouch' , this.node ,function(obj){ 
+             var cardDragView = obj.getComponent('CardDragView');
+             cardDragView.refresh( cardId )
+                         .setPosition( self.getPosition() )
+                         .setCollisionCheckCtr(self.collisionCheckCtr)
+                         .setCardAreaType(self.getCardAreaType())
+                         .setEveLister(self.eveLister)
+                         .setCardId(cardId);
+
+             self.singleCardSize = obj.getContentSize();             
+             var tmp = obj.getComponent(self.getSingeDataComponentName());
+             tmp.setCardId(cardId);
+             tmp.setCtr(cardDragView);
+             self.objectGroup.add(tmp );
+         })   
+    },
+
     //==============================================================================================================================
     //  以下子类实现
     //==============================================================================================================================
-
-
-    /***添加一张牌 */
-    addCard: function(cardId){},
-
+  
     /***第一个位置 */
     getFristPosition : function(){},
 
@@ -74,5 +97,9 @@ module.exports =  cc.Class({
     /***获得一个新的坐标 */
     getPosition : function(){},
 
-    
+    /***获取牌所在区域 */
+    getCardAreaType:function(){},
+
+    /***获取单个牌挂载的数据管理组件 */
+    getSingeDataComponentName:function(){},
 });

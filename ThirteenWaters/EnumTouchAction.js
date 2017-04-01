@@ -6,9 +6,13 @@
 
 module.exports = cc.Enum({
   
-    PICK_UP: 1,            //拾起
+    HAND_PICK_UP: 1,            //拾起
 
-    PUT_DOWN: 2            //放下
+    HAND_PUT_DOWN: 2,           //放下
+
+    SOLT_PICK_UP: 3,            //拾起
+
+    SOLT_PUT_DOWN: 4            //放下
   
 });
 
