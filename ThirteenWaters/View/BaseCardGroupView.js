@@ -7,8 +7,7 @@ var _ = require('underscore');
 var EveViewLister = require('./EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); 
-var BaseObjectGroup = require( './../../Public/BaseObjectGroup' );
-var CardSlotDataMG = require('./../Data/CardSlotDataMG');
+var BaseObjectGroup = require( './../../Public/BaseObjectGroup' ); 
 
 module.exports =  cc.Class({
     extends: cc.Component,
@@ -28,12 +27,7 @@ module.exports =  cc.Class({
             default:null,
             type:BaseObjectGroup,
             displayName:'界面数据集合 BaseObjectGroup'
-        }, 
-        cardSlotDataMG : {            
-            default:null,
-            type:CardSlotDataMG,
-            displayName:'纯卡槽数据 CardSlotDataMG'
-        },
+        }
     },  
     onLoad:function(){
  
@@ -74,7 +68,8 @@ module.exports =  cc.Class({
                          .setCollisionCheckCtr(self.collisionCheckCtr)
                          .setCardAreaType(self.getCardAreaType())
                          .setEveLister(self.eveLister)
-                         .setCardId(cardId);
+                         .setCardId(cardId)
+                         .setSoltObjectGroup(self.objectGroup)
 
              self.singleCardSize = obj.getContentSize();             
              var tmp = obj.getComponent(self.getSingeDataComponentName());

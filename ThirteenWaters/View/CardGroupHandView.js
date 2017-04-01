@@ -37,6 +37,7 @@ module.exports =  cc.Class({
         this.addCards([1,2,3,4,5,6,7]);
     },
 
+    /***添加多个牌 */
     addCards : function(cards){
         var self = this;
         _.each( cards , function(cardId){

@@ -73,16 +73,18 @@ module.exports =  cc.Class({
     },
 
     /***设置卡槽数据管理对象 */
-    setCardSlotDataMG:function( v ){
-        this.cardSlotDataMG = v;
+    setSoltObjectGroup:function( v ){
+        this.objectGroup = v;
     },
+    
     /***计算有效动作 */
     calcEffectiveAction:function(checkInfo){
         if(null == checkInfo){
             return false;
         }
+        //表示手牌碰撞卡槽区
         if( EnumCardAreaType.HAND == this.cardAreaType ){
-            if( false == this.cardSlotDataMG.isCanAddOrSwitch() ){
+            if( false == this.objectGroup.isCanAddOrSwitch() ){
                 self.eveLister.doDataToLister(EnumTouchAction.HAND_PICK_UP,{cardId:self.getCardId(),checkInfo:checkInfo})
             }else{
                 return false;

@@ -7,7 +7,11 @@ var _ = require('underscore');
 module.exports =  cc.Class({
     
     extends: cc.Component,
- 
+    
+    onLoad:function(){
+        this.list = [];
+    },
+
     /**
      * 添加一个对象
      * baseObject : 一个BaseObject或其子类对象
