@@ -17,6 +17,7 @@ module.exports =  cc.Class({
         /***当前可加行 */
         this.currLine = 0;
     },
+    
     /***新增一张 */
     add:function( baseObject ){
         this._super(baseObject);
@@ -39,7 +40,7 @@ module.exports =  cc.Class({
      * data : {cardId:1,checkInfo:{line:1,Lattice:1}}
     */
     isCanAddOrSwitch : function(data){
-        return false;
+        return true;
     },  
 
     /**
@@ -94,9 +95,8 @@ module.exports =  cc.Class({
      */
     removeCardByCardId : function( cardId ){
 
-    },
- 
-
+    }, 
+    
     /**
      * 通过行获得牌组数据
      * currLine：行号

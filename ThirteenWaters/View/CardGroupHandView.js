@@ -11,8 +11,9 @@ var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); 
 var SingleCardViewData = require('./../ViewData/SingleCardViewData'); 
 var EnumCardAreaType = require('./EnumCardAreaType');
+var BaseCardGroupView = require('./BaseCardGroupView');
 module.exports =  cc.Class({
-    extends: cc.Component,
+    extends: BaseCardGroupView,
 
     properties: {
         eveLister : {            
@@ -23,7 +24,8 @@ module.exports =  cc.Class({
             default:null,
             type:CollisionCheckCtr
         },      
-    },   
+    },  
+
     onLoad:function(){ 
         
         this._super();
@@ -35,6 +37,28 @@ module.exports =  cc.Class({
         this.eveLister.addLister(EnumTouchAction.HAND_PICK_UP,this.pickUpCard,this); 
 
         this.addCards([1,2,3,4,5,6,7]);
+    },
+    
+    /***添加一张牌 */
+    addCard: function(cardId){  
+         this._super();
+         var self = this;
+         UtilGameObject.createAddparent( 'prefabs/thirteenWaters/cardTouch' , this.node ,function(obj){ 
+             var cardDragView = obj.getComponent('CardDragView');
+             cardDragView.refresh( cardId )
+                         .setPosition( self.getPosition() )
+                         .setCollisionCheckCtr(self.collisionCheckCtr)
+                         .setCardAreaType(self.getCardAreaType())
+                         .setEveLister(self.eveLister)
+                         .setCardId(cardId)
+                         .setSoltObjectGroup(self.objectGroup)
+
+             self.singleCardSize = obj.getContentSize();             
+             var tmp = obj.getComponent(self.getSingeDataComponentName());
+             tmp.setCardId(cardId);
+             tmp.setCtr(cardDragView);
+             self.objectGroup.add(tmp );
+         })   
     },
 
     /***添加多个牌 */

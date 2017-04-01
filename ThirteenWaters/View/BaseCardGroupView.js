@@ -30,7 +30,8 @@ module.exports =  cc.Class({
         }
     },  
     onLoad:function(){
- 
+        
+        /**单张牌的尺寸 */
         this.singleCardSize = {width:20,height:20};
 
         this.eveLister.addLister(EnumTouchAction.PUT_DOWN,this.putDown,this);
@@ -56,33 +57,15 @@ module.exports =  cc.Class({
     /***删除卡牌 */
     removeByCardId : function( cardId ){
         this.objectGroup.remove( cardId );
-    },
-
-    /***添加一张牌 */
-    addCard: function(cardId){  
-         var self = this;
-         UtilGameObject.createAddparent( 'prefabs/thirteenWaters/cardTouch' , this.node ,function(obj){ 
-             var cardDragView = obj.getComponent('CardDragView');
-             cardDragView.refresh( cardId )
-                         .setPosition( self.getPosition() )
-                         .setCollisionCheckCtr(self.collisionCheckCtr)
-                         .setCardAreaType(self.getCardAreaType())
-                         .setEveLister(self.eveLister)
-                         .setCardId(cardId)
-                         .setSoltObjectGroup(self.objectGroup)
-
-             self.singleCardSize = obj.getContentSize();             
-             var tmp = obj.getComponent(self.getSingeDataComponentName());
-             tmp.setCardId(cardId);
-             tmp.setCtr(cardDragView);
-             self.objectGroup.add(tmp );
-         })   
-    },
+    }, 
 
     //==============================================================================================================================
     //  以下子类实现
     //==============================================================================================================================
-  
+    
+    /***添加一张牌 */
+    addCard: function(cardId){},
+
     /***第一个位置 */
     getFristPosition : function(){},
 
