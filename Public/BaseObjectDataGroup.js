@@ -14,7 +14,7 @@ module.exports =  cc.Class({
 
     /**
      * 添加一个对象
-     * baseObject : 一个BaseObject或其子类对象
+     * baseObject : 一个BaseObjectData或其子类对象
      */
     add : function( baseObject ){
         this.list.push( baseObject )

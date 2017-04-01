@@ -7,7 +7,7 @@ var _ = require('underscore');
 var EveViewLister = require('./EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./CollisionCheckCtr'); 
-var BaseObjectGroup = require( './../../Public/BaseObjectGroup' ); 
+var BaseObjectDataGroup = require( './../../Public/BaseObjectDataGroup' ); 
 
 module.exports =  cc.Class({
     extends: cc.Component,
@@ -25,8 +25,8 @@ module.exports =  cc.Class({
         }, 
         objectGroup : {            
             default:null,
-            type:BaseObjectGroup,
-            displayName:'界面数据集合 BaseObjectGroup'
+            type:BaseObjectDataGroup,
+            displayName:'界面数据集合 BaseObjectDataGroup'
         }
     },  
     onLoad:function(){

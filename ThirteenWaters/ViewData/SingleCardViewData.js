@@ -3,10 +3,10 @@
  * author:tony
  * time : 2017/03/24
  */
-var BaseObject = require( './../../Public/BaseObject' );
+var BaseObjectData = require( './../../Public/BaseObjectData' );
 module.exports =  cc.Class({ 
     
-    extends: BaseObject,
+    extends: BaseObjectData,
 
     getCardId : function(){
         return this.cardId;
