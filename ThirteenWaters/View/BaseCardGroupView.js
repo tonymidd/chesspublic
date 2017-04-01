@@ -30,15 +30,10 @@ module.exports =  cc.Class({
         }
     },  
     onLoad:function(){
-        
         /**单张牌的尺寸 */
         this.singleCardSize = {width:20,height:20};
-
-        this.eveLister.addLister(EnumTouchAction.PUT_DOWN,this.putDown,this);
-
-        this.eveLister.addLister(EnumTouchAction.PICK_UP,this.pickUpCard,this); 
-  
     },
+    
     /**选择一张牌拾起时 */
     pickUpCard:function( cardId,self ){
         self.removeByCardId(cardId);

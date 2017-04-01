@@ -28,9 +28,7 @@ module.exports =  cc.Class({
 
     onLoad:function(){ 
         
-        this._super();
-
-        this.singleCardSize = {width:20,height:20};
+        this._super(); 
 
         this.eveLister.addLister(EnumTouchAction.HAND_PUT_DOWN,this.putDown,this);
 
