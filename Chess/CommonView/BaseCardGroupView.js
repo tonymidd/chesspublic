@@ -5,8 +5,7 @@
  */
 var BaseCardGroupPosSort = require('./BaseCardGroupPosSort');
 var AgencyActionLister= require('./AgencyActionLister');
-var CardViewCtr = require('./BaseSingleDataViewCtr');
-var _ = require('underscore');
+var CardViewCtr = require('./BaseSingleDataViewCtr'); 
 module.exports = cc.Class({
     extends: cc.Component,
 

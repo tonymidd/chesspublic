@@ -1,6 +1,6 @@
-var BaseRoomView = require('./CommonView/BaseRoomView');
+
 cc.Class({
-    extends: BaseRoomView,
+    extends: cc.Component,
 
     properties: {
         // foo: {
@@ -17,7 +17,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        GameDataCtr.addListerToView( this.Lister );
+        
     }, 
  
     Lister:function( data ){

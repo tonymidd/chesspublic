@@ -5,8 +5,7 @@
  */
 
 var BaseCardGroupView = require('./../BaseCardGroupView');
-var FuZiSingCardGroupViewCtr = require('./FuZiSingCardGroupViewCtr');
-var _ = require('underscore');
+var FuZiSingCardGroupViewCtr = require('./FuZiSingCardGroupViewCtr'); 
 cc.Class({
     extends: BaseCardGroupView, 
 

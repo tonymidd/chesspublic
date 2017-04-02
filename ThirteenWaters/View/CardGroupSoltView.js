@@ -3,33 +3,33 @@
  * 描述：
  * author:tony
  * time : 2017/03/24
- */
-var _ = require('underscore');
-var EveViewLister = require('./EveViewLister');
+ */ 
+var EveViewLister = require('./../EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
-var CollisionCheckCtr = require('./CollisionCheckCtr'); 
+var CollisionCheckCtr = require('./../CollisionCheckCtr'); 
 var SingleCardViewData = require('./../ViewData/SingleCardViewData'); 
-var BaseCardGroupView = require('./BaseCardGroupView');
+var BaseCardGroupViewThirteenWaters = require('./BaseCardGroupViewThirteenWaters');
 module.exports =  cc.Class({
-    extends: BaseCardGroupView,
+    extends: BaseCardGroupViewThirteenWaters,
 
     properties: {
-        eveLister : {            
+        _eveLister : {            
             default:null,
             type:EveViewLister
         },
-        collisionCheckCtr : {            
+        _collisionCheckCtr : {             
             default:null,
             type:CollisionCheckCtr
         },      
-    },   
+    },  
+     
     onLoad:function(){ 
         
         this._super(); 
 
-        this.eveLister.addLister(EnumTouchAction.SOLT_PUT_DOWN,this.putDown,this);
+        this._eveLister.addLister(EnumTouchAction.SOLT_PUT_DOWN,this.putDown,this);
 
-        this.eveLister.addLister(EnumTouchAction.SOLT_PICK_UP,this.pickUpCard,this); 
+        this._eveLister.addLister(EnumTouchAction.SOLT_PICK_UP,this.pickUpCard,this); 
     },  
 
     /***添加一张牌 */
@@ -40,9 +40,9 @@ module.exports =  cc.Class({
              var cardDragView = obj.getComponent('CardDragView');
              cardDragView.refresh( cardId )
                          .setPosition( self.getPosition() )
-                         .setCollisionCheckCtr(self.collisionCheckCtr)
+                         .setCollisionCheckCtr(self._collisionCheckCtr)
                          .setCardAreaType(self.getCardAreaType())
-                         .setEveLister(self.eveLister)
+                         .setEveLister(self._eveLister)
                          .setCardId(cardId)
                          .setSoltObjectGroup(self.objectGroup)
 

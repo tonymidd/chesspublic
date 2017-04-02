@@ -6,20 +6,21 @@
 
 module.exports =  cc.Class({
     extends: cc.Component,
-
+ 
     properties: {
         /**碰撞组*/
-        group:[cc.Node], 
+        group:[cc.Node],  
     },  
 
     onLoad:function(){ 
+ 
         this.groupLength = this.group.length;
-        var posList = [];
-        posList.push({});
+        this.posList = [];
+        this.posList.push({});
         var i = 0;        
-        for( i ; i < groupLength; ++i ){
-             var tmpNode = this.group[i];
-             var position = tmpNode.getPosition();
+        for( i ; i < this.groupLength; ++i ){
+             var tmpNode = this.group[i]; 
+             var position =tmpNode.parent.convertToWorldSpaceAR( tmpNode.getPosition() ); 
              var size = tmpNode.getContentSize();
              var w = size.width*0.5;
              var h = size.height*0.5;
@@ -30,9 +31,7 @@ module.exports =  cc.Class({
                  down_y :(position.y-h),
                  width:size.width
              }; 
-             posList.push(pList);
-
-
+             this.posList.push(pList); 
         }
     },
 
@@ -41,33 +40,38 @@ module.exports =  cc.Class({
      * return: {line:1,lattice:1};表示碰撞位置为第一行第一格
      *         null:表示没有碰撞
      */
-    doCheck : function( position ){ 
-        var line = self.doCheckLine( position );
+    doCheck : function( touchPosition ){ 
+        var self = this;
+        var line = self.doCheckLine( touchPosition );
         if( -1 == line ){
             return null;
         }
-        var lattice = doCheckLattice(line,position);
+        var lattice = self.doCheckLattice(line,touchPosition);
         return {line:line,lattice:lattice};
     },
 
     /***检查碰撞的格子号
      * return 1到5
      */
-    doCheckLattice : function( line , position ){
-        var posInfo = posList[line];
+    doCheckLattice : function( line , touchPosition ){
+        var posInfo = this.posList[line];
+        //平均宽
+        var singleWight = posInfo.width * this.getLatticePerByLine(line);
+        //计算碰撞所在宽度
+        var tmpWidth = touchPosition.x - posInfo.left_x;
         
-        var tmpWidth = position.x - posInfo.left_x;
-        
-        return 1;
+        var tmp =  Math.ceil( tmpWidth/singleWight )
+
+        return tmp;
     },
 
     /***检查所碰撞的行 */
-    doCheckLine : function( position ){ 
-        var x = position.x;
-        var y = position.y; 
+    doCheckLine : function( touchPosition ){ 
+        var x = touchPosition.x;
+        var y = touchPosition.y; 
         var i = 1;        
-        for(i;i<groupLength+1;++i){
-            var posInfo = posList[i];
+        for(i;i<this.groupLength+1;++i){
+            var posInfo = this.posList[i];
             if( x > posInfo.left_x  && 
                 x < posInfo.right_x && 
                 y < posInfo.up_y && 
@@ -75,6 +79,12 @@ module.exports =  cc.Class({
                     return i;
                 }
         }
+        cc.log('未检测到碰撞行');
         return -1;
     },
+
+    getLatticePerByLine:function(line){
+        var tmp = [0,1/3.0,0.2,0.2];
+        return tmp[line];
+    }
 });

@@ -40,6 +40,7 @@ module.exports =  cc.Class({
      * data : {cardId:1,checkInfo:{line:1,Lattice:1}}
     */
     isCanAddOrSwitch : function(data){
+        this._super();
         return true;
     },  
 

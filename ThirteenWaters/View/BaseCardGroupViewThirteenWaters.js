@@ -2,11 +2,10 @@
  * 未加入卡槽的卡牌
  * author:tony
  * time : 2017/03/24
- */
-var _ = require('underscore');
-var EveViewLister = require('./EveViewLister');
+ */ 
+var EveViewLister = require('./../EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
-var CollisionCheckCtr = require('./CollisionCheckCtr'); 
+var CollisionCheckCtr = require('./../CollisionCheckCtr'); 
 var BaseObjectDataGroup = require( './../../Public/BaseObjectDataGroup' ); 
 
 module.exports =  cc.Class({

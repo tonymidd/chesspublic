@@ -4,23 +4,22 @@
  *      拖动此组件管理的卡牌时由卡牌本身处理
  * author:tony
  * time : 2017/03/24
- */
-var _ = require('underscore');
-var EveViewLister = require('./EveViewLister');
+ */ 
+var EveViewLister = require('./../EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
-var CollisionCheckCtr = require('./CollisionCheckCtr'); 
+var CollisionCheckCtr = require('./../CollisionCheckCtr'); 
 var SingleCardViewData = require('./../ViewData/SingleCardViewData'); 
 var EnumCardAreaType = require('./EnumCardAreaType');
-var BaseCardGroupView = require('./BaseCardGroupView');
+var BaseCardGroupViewThirteenWaters = require('./BaseCardGroupViewThirteenWaters');
 module.exports =  cc.Class({
-    extends: BaseCardGroupView,
+    extends: BaseCardGroupViewThirteenWaters,
 
     properties: {
-        eveLister : {            
+        mEveLister : {            
             default:null,
             type:EveViewLister
         },
-        collisionCheckCtr : {            
+        mCollisionCheckCtr : {            
             default:null,
             type:CollisionCheckCtr
         },      
@@ -30,9 +29,9 @@ module.exports =  cc.Class({
         
         this._super(); 
 
-        this.eveLister.addLister(EnumTouchAction.HAND_PUT_DOWN,this.putDown,this);
+        this.mEveLister.addLister(EnumTouchAction.HAND_PUT_DOWN,this.putDown,this);
 
-        this.eveLister.addLister(EnumTouchAction.HAND_PICK_UP,this.pickUpCard,this); 
+        this.mEveLister.addLister(EnumTouchAction.HAND_PICK_UP,this.pickUpCard,this); 
 
         this.addCards([1,2,3,4,5,6,7]);
     },
@@ -41,21 +40,22 @@ module.exports =  cc.Class({
     addCard: function(cardId){  
          this._super();
          var self = this;
-         UtilGameObject.createAddparent( 'prefabs/thirteenWaters/cardTouch' , this.node ,function(obj){ 
-             var cardDragView = obj.getComponent('CardDragView');
-             cardDragView.refresh( cardId )
-                         .setPosition( self.getPosition() )
-                         .setCollisionCheckCtr(self.collisionCheckCtr)
-                         .setCardAreaType(self.getCardAreaType())
-                         .setEveLister(self.eveLister)
-                         .setCardId(cardId)
-                         .setSoltObjectGroup(self.objectGroup)
+         UtilGameObject.createAddparent( 'prefabs/thirteenWaters/CardDragView' , this.node ,function(tmpObj){ 
+             var cardDragView = tmpObj.getComponent('CardDragView');
+             cardDragView.refresh( cardId );
+         
+                cardDragView.setPosition( self.getPosition() )
+                cardDragView.setCollisionCheckCtr(self.mCollisionCheckCtr)
+                cardDragView.setCardAreaType(self.getCardAreaType())
+                cardDragView.setEveLister(self.mEveLister)
+                cardDragView.setCardId(cardId)
+                cardDragView.setSoltObjectGroup(self.objectGroup)
 
-             self.singleCardSize = obj.getContentSize();             
-             var tmp = obj.getComponent(self.getSingeDataComponentName());
-             tmp.setCardId(cardId);
-             tmp.setCtr(cardDragView);
-             self.objectGroup.add(tmp );
+                self.singleCardSize = tmpObj.getContentSize();             
+                var tmp = tmpObj.getComponent(self.getSingeDataComponentName());
+                tmp.setCardId(cardId);
+                tmp.setCtr(cardDragView);
+                self.objectGroup.add(tmp );
          })   
     },
 

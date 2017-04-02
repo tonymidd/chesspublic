@@ -22,5 +22,12 @@ module.exports =  cc.Class({
         this.list = _.reject(  this.list , function(data){
             return key == data.cardId;
         });
-    }
+    },
+
+     /***是否可以添加或者更换牌 
+     * data : {cardId:1,checkInfo:{line:1,Lattice:1}}
+    */
+    isCanAddOrSwitch : function(data){
+        return true;
+    },  
 });

@@ -2,8 +2,7 @@
  * 牌组牌坐标排序管理
  * author:tony
  * time : 2017/03/24
- */
-var _ = require('underscore');
+ */ 
 module.exports = cc.Class({
     extends: cc.Component,
 

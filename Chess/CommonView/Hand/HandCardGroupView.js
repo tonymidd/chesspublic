@@ -3,8 +3,7 @@
  * author:tony
  * time : 2017/03/24
  */
-var BaseCardGroupView = require('./../BaseCardGroupView');
-var _ = require('underscore'); 
+var BaseCardGroupView = require('./../BaseCardGroupView'); 
 window.HandCardGroupView=cc.Class({
     
     extends: BaseCardGroupView,
@@ -17,7 +16,7 @@ window.HandCardGroupView=cc.Class({
 
      /***出牌处理 */
     outCard : function( card ){
-        this._super(card);
+        
     },
 
     /**新增一个牌

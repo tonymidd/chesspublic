@@ -2,9 +2,8 @@
  * 牌组
  * author:tony
  * time : 2017/03/24
- */
-var _ = require('underscore');
-//var EnumHandCardState = require('./../../../Enum/EnumHandCardState');
+ */ 
+var HandCardGroupView = require('./HandCardGroupView');
 cc.Class({
     extends: HandCardGroupView,
 
