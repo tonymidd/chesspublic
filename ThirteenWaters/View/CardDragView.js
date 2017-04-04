@@ -20,13 +20,16 @@ module.exports =  cc.Class({
  
     onLoad:function(){ 
         var self = this; 
+        
         self.canvas = cc.director.getScene().getChildByName('Canvas');
-        this.moveBfPosition = {x:0,y:0};
+
+        self.moveBfPosition = {x:0,y:0};
+
         //点击前的卡牌坐标位置 用于未检查到碰撞复位
-        this.bfPositionOffset = {x:0,y:0};
+        self.bfPositionOffset = {x:0,y:0};
 
         //点下去事件处理
-        this.node.on(cc.Node.EventType.TOUCH_START,function(event){            
+        self.node.on(cc.Node.EventType.TOUCH_START,function(event){            
             //鼠标的点击的位置 
             var worldPosition = event.getLocation() 
             var bfCardPosition = self.moveBfPosition = self.getPosition();
@@ -34,27 +37,37 @@ module.exports =  cc.Class({
         })
 
         //移动事件处理
-        this.node.on(cc.Node.EventType.TOUCH_MOVE   ,function(event){            
+        self.node.on(cc.Node.EventType.TOUCH_MOVE   ,function(event){            
             var worldPosition =event.getLocation(); 
             var tmpCardPostion = {x:(worldPosition.x-self.bfPositionOffset.x),y:(worldPosition.y-self.bfPositionOffset.y) };
             self.setPosition(tmpCardPostion);
         }) 
 
         //松开事件处理
-        this.node.on(cc.Node.EventType.MOUSE_UP  ,function(event){            
+        self.node.on(cc.Node.EventType.MOUSE_UP  ,function(event){            
           
             var worldPosition =  self.node.parent.convertToWorldSpaceAR( self.getPosition());  
             var checkInfo = self.collisionCtr.doCheck( worldPosition );
             
-            //复位
-            if( false == self.calcEffectiveAction( checkInfo ) ){ 
-                //卡槽区的牌松开时没有碰撞
-                if( EnumCardAreaType.SOLT == self.cardAreaType ){
-                    self.eveLister.doDataToLister(EnumTouchAction.SOLT_RM_CARD,self.getCardId() )
+           
+            if( self.calcEffectiveAction( checkInfo ) ){ 
+                         
+            }
+            //没有碰撞
+            else{
+                 //卡槽区的牌松开时没有碰撞
+                if( EnumCardAreaType.SOLT == self.cardAreaType ){  
+                    var data = {
+                        cardId : self.getCardId(),
+                        line : self.singleObject.getLine(),
+                        lattice : self.singleObject.getLattice()
+                    }
+                    self.eveLister.doDataToLister(EnumTouchAction.SOLT_RM_CARD,data)
                     self.eveLister.doDataToLister(EnumTouchAction.HAND_ADD_CARD,self.getCardId());
-                }else{
-                    self.setPosition(self.moveBfPosition);
-                }                
+                    return;
+                }
+                //复位处理
+                self.setPosition(self.moveBfPosition);                    
             }
         })         
     },
@@ -79,26 +92,42 @@ module.exports =  cc.Class({
         this.eveLister = eveLister;
     },
 
-    /***设置卡槽数据管理对象 */
-    setSoltObjectGroup:function( v ){
+    /***设置数据管理对象 */
+    setObjectGroup:function( v ){
         this.objectGroup = v;
+    },  
+
+    /***设置数据管理对象 
+    * 
+    */
+    setOtherView:function( v ){
+        this.otherView = v;
     },
-    
+
+    /***设置数据管理对象 */
+    setSingleObject:function( v ){
+        this.singleObject = v;
+    },
+
     /***计算有效动作 */
     calcEffectiveAction:function(checkInfo){
         if( null == checkInfo ){ 
             return false;
         }
+
+        //有效碰撞处理
         cc.log('checkInfo = %s ', JSON.stringify( checkInfo ));
         var self = this;
+
         //表示手牌碰撞卡槽区
         if( EnumCardAreaType.HAND == self.cardAreaType ){
-            if( false == self.objectGroup.isCanAddOrSwitch({}) ){
-                self.eveLister.doDataToLister(EnumTouchAction.HAND_PICK_UP,{cardId:self.getCardId(),checkInfo:checkInfo})
-            }else{
-                self.eveLister.doDataToLister(EnumTouchAction.SOLT_ADD_CARD,{cardId:self.getCardId() ,line:checkInfo.line,lattice:checkInfo.lattice })
+            var data = {cardId:self.getCardId() ,line:checkInfo.line,lattice:checkInfo.lattice }
+            if( true == self.otherView.isCanAddOrSwitch(data) ){
+                self.eveLister.doDataToLister(EnumTouchAction.SOLT_ADD_CARD,data)
                 self.eveLister.doDataToLister(EnumTouchAction.HAND_RM_CARD,self.getCardId());
-                return false;
+                return true;
+            }else{
+                
             }
         }else{
             

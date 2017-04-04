@@ -19,7 +19,10 @@ module.exports =  cc.Class({
      */
     add : function( baseObject ){
         var idx = _.size(this.list);
-        this.posList[idx] = baseObject.getPosition();
+        if(_.size(this.posList)<=idx){
+            this.posList.push( baseObject.getPosition() );
+        }
+        
         this.list.push( baseObject );
     },
  

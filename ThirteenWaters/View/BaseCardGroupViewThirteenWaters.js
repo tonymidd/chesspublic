@@ -6,8 +6,6 @@
 var EveViewLister = require('./../EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
 var CollisionCheckCtr = require('./../CollisionCheckCtr'); 
-var BaseObjectDataGroup = require( './../../Public/BaseObjectDataGroup' ); 
-
 module.exports =  cc.Class({
     extends: cc.Component, 
     properties: {
@@ -20,11 +18,6 @@ module.exports =  cc.Class({
             default:null,
             type:CollisionCheckCtr,
             displayName:'碰撞检查 CollisionCheckCtr'
-        }, 
-        objectGroup : {            
-            default:null,
-            type:BaseObjectDataGroup,
-            displayName:'界面数据集合 BaseObjectDataGroup'
         }
     },  
     onLoad:function(){
@@ -32,15 +25,7 @@ module.exports =  cc.Class({
         this.singleCardSize = {width:20,height:20};
     }, 
 
-    /***牌总数量*/
-    getCardCnt : function(){
-       return this.objectGroup.getSize();
-    },
 
-    /***删除卡牌 */
-    removeByCardId : function( cardId ){
-        this.objectGroup.remove( cardId );
-    }, 
 
     //==============================================================================================================================
     //  以下子类实现

@@ -96,7 +96,10 @@ module.exports =  cc.Class({
      */
     removeByCardId : function( cardId ){
        var line =  this.lineByCardIdList[cardId];  
-       var tmp = this.cardList[line];
+       this.cardList[line]  = _.filter( this.cardList[line] , function(tmpCardId){
+           return cardId != tmpCardId;
+       })
+       return line;
     }, 
     
     /**
