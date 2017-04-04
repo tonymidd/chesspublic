@@ -5,14 +5,11 @@
  */ 
 
 module.exports = cc.Enum({
-  
-    HAND_PICK_UP: 1,            //拾起
 
-    HAND_PUT_DOWN: 2,           //放下
-
-    SOLT_PICK_UP: 3,            //拾起
-
-    SOLT_PUT_DOWN: 4            //放下
-  
+    SOLT_ADD_CARD:1,    //卡槽新增一张牌
+    SOLT_RM_CARD:2,    //卡槽移除一张牌
+    
+    HAND_ADD_CARD:3,    //手牌新增一张牌
+    HAND_RM_CARD:4,     //手牌移除一张牌
 });
 

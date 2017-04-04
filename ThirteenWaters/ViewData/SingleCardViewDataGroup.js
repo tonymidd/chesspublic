@@ -17,10 +17,10 @@ module.exports =  cc.Class({
             return key == tmpObject.getCardId();
         })
 
-        _object.destory(); 
+        _object.removeFromParent(); 
         
-        this.list = _.reject(  this.list , function(data){
-            return key == data.cardId;
+        this.list = _.reject(  this.list , function(tmpObject){
+            return key == tmpObject.getCardId();
         });
     },
 

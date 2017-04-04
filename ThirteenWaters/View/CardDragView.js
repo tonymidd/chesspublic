@@ -48,7 +48,13 @@ module.exports =  cc.Class({
             
             //复位
             if( false == self.calcEffectiveAction( checkInfo ) ){ 
-                self.setPosition(self.moveBfPosition);
+                //卡槽区的牌松开时没有碰撞
+                if( EnumCardAreaType.SOLT == self.cardAreaType ){
+                    self.eveLister.doDataToLister(EnumTouchAction.SOLT_RM_CARD,self.getCardId() )
+                    self.eveLister.doDataToLister(EnumTouchAction.HAND_ADD_CARD,self.getCardId());
+                }else{
+                    self.setPosition(self.moveBfPosition);
+                }                
             }
         })         
     },
@@ -80,7 +86,7 @@ module.exports =  cc.Class({
     
     /***计算有效动作 */
     calcEffectiveAction:function(checkInfo){
-        if(null == checkInfo){
+        if( null == checkInfo ){ 
             return false;
         }
         cc.log('checkInfo = %s ', JSON.stringify( checkInfo ));
@@ -90,10 +96,12 @@ module.exports =  cc.Class({
             if( false == self.objectGroup.isCanAddOrSwitch({}) ){
                 self.eveLister.doDataToLister(EnumTouchAction.HAND_PICK_UP,{cardId:self.getCardId(),checkInfo:checkInfo})
             }else{
+                self.eveLister.doDataToLister(EnumTouchAction.SOLT_ADD_CARD,{cardId:self.getCardId() ,line:checkInfo.line,lattice:checkInfo.lattice })
+                self.eveLister.doDataToLister(EnumTouchAction.HAND_RM_CARD,self.getCardId());
                 return false;
             }
         }else{
-            self.eveLister.doDataToLister(EnumTouchAction.SOLT_PICK_UP,{cardId:self.getCardId(),checkInfo:checkInfo})
+            
         }   
     }
 });

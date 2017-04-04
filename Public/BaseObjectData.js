@@ -17,8 +17,15 @@ module.exports =  cc.Class({
         return this;
     },
     
-    destory : function(){
-        this.node.destory();
+    removeFromParent : function(){
+        this.node.removeFromParent(); 
     }, 
     
+    getPosition : function(){
+        return this.ctr.getPosition();
+    },
+
+    setPosition : function(v){
+        this.ctr.setPosition(v);
+    }
 }); 

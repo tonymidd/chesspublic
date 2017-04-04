@@ -31,14 +31,13 @@ module.exports =  cc.Class({
     }, 
 
     //数据传输
-    doDataToLister : function( actionTypeLister , data ){
-        console.log(' -- doDataToLister -- ');
+    doDataToLister : function( actionTypeLister , data ){ 
         if( null == this.cbList ){
             console.error('this.cbList is null ');
             return;
         }
         if( null == this.cbList[actionTypeLister] ){
-            console.error('this.cbList[actionTypeLister] is null ');
+            console.error('this.cbList[actionTypeLister] is null '+actionTypeLister);
             return;
         } 
         this.cbList[actionTypeLister].cb(data,this.cbList[actionTypeLister].self );

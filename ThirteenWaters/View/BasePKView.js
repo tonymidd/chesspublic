@@ -10,15 +10,7 @@ module.exports =  cc.Class({
         icon:{
             type:cc.Sprite,
             default:null
-        },
-        numIcon:{
-            type:cc.Sprite,
-            default:null
-        },
-        type:{
-            type:cc.Sprite,
-            default:null
-        },
+        }
     },  
     onLoad:function(){
         //子类实现
@@ -42,7 +34,13 @@ module.exports =  cc.Class({
      * 设置卡牌id
      */ 
     setCardId:function(v){
+        var self = this;
         this.cardId = v;
+        cc.loader.loadRes('textures/pk13/'+v, cc.SpriteFrame, function (err, spriteFrame) { 
+            var sprite = self.icon.getComponent(cc.Sprite);
+            sprite.spriteFrame = spriteFrame; 
+        });
+
     },
 
     /***获取id */

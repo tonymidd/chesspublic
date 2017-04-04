@@ -5,37 +5,37 @@
  * author:tony
  * time : 2017/03/24
  */ 
-var EveViewLister = require('./../EveViewLister');
 var EnumTouchAction = require('./../EnumTouchAction');
-var CollisionCheckCtr = require('./../CollisionCheckCtr'); 
 var SingleCardViewData = require('./../ViewData/SingleCardViewData'); 
 var EnumCardAreaType = require('./EnumCardAreaType');
 var BaseCardGroupViewThirteenWaters = require('./BaseCardGroupViewThirteenWaters');
 module.exports =  cc.Class({
     extends: BaseCardGroupViewThirteenWaters,
-
-    properties: {
-        mEveLister : {            
-            default:null,
-            type:EveViewLister
-        },
-        mCollisionCheckCtr : {            
-            default:null,
-            type:CollisionCheckCtr
-        },      
-    },  
-
     onLoad:function(){ 
         
         this._super(); 
 
-        this.mEveLister.addLister(EnumTouchAction.HAND_PUT_DOWN,this.putDown,this);
+        this.eveLister.addLister(EnumTouchAction.HAND_ADD_CARD,this.listerAddCard,this); 
 
-        this.mEveLister.addLister(EnumTouchAction.HAND_PICK_UP,this.pickUpCard,this); 
-
-        this.addCards([1,2,3,4,5,6,7]);
+        this.eveLister.addLister(EnumTouchAction.HAND_RM_CARD,this.rmoveLister,this); 
+ 
+        this.addCards([ 1,2,3,  
+                        4,5,6,7,8,  
+                        9,10,11,12,13]);
     },
-    
+
+    rmoveLister:function( cardId,self){
+        self.removeByCardId(cardId);
+        self.resetPositionAll();
+    },    
+
+     /***监听删除一张牌
+     * data:{line:1,lattice:2,cardId:1}
+     */
+    listerAddCard : function( data , self ){
+        self.addCard( data.cardId );
+    },
+
     /***添加一张牌 */
     addCard: function(cardId){  
          this._super();
@@ -43,15 +43,13 @@ module.exports =  cc.Class({
          UtilGameObject.createAddparent( 'prefabs/thirteenWaters/CardDragView' , this.node ,function(tmpObj){ 
              var cardDragView = tmpObj.getComponent('CardDragView');
              cardDragView.refresh( cardId );
-         
+                self.singleCardSize = tmpObj.getContentSize();     
                 cardDragView.setPosition( self.getPosition() )
-                cardDragView.setCollisionCheckCtr(self.mCollisionCheckCtr)
+                cardDragView.setCollisionCheckCtr(self.collisionCheckCtr)
                 cardDragView.setCardAreaType(self.getCardAreaType())
-                cardDragView.setEveLister(self.mEveLister)
+                cardDragView.setEveLister(self.eveLister)
                 cardDragView.setCardId(cardId)
-                cardDragView.setSoltObjectGroup(self.objectGroup)
-
-                self.singleCardSize = tmpObj.getContentSize();             
+                cardDragView.setSoltObjectGroup(self.objectGroup)       
                 var tmp = tmpObj.getComponent(self.getSingeDataComponentName());
                 tmp.setCardId(cardId);
                 tmp.setCtr(cardDragView);
@@ -68,9 +66,8 @@ module.exports =  cc.Class({
     },
 
     /***第一个位置 */
-    getFristPosition : function(){
-        this._super();
-        return {x:-320,y:150};
+    getFristPositions : function(cardSize,spacex){ 
+        return {x:(-480+cardSize.width*0.5+spacex),y:cardSize.height*0.5};
     },
 
     /***单张牌的尺寸 */
@@ -82,8 +79,14 @@ module.exports =  cc.Class({
     /***获得一个新的坐标 */
     getPosition : function(){
         this._super();
-        var fristPosition = this.getFristPosition(); 
-        return {x:fristPosition.x + this.getCardCnt()*(this.singleCardSize.width+10),y:fristPosition.y};
+        var idx =  this.getCardCnt();
+        var tmpPos = this.objectGroup.getPositionByIdx(idx)
+        if(  null != tmpPos ){
+            return tmpPos;
+        }
+        var spaceX = this.getSpaceX(this.singleCardSize);
+        var fristPosition = this.getFristPositions(this.singleCardSize,spaceX); 
+        return {x:fristPosition.x + idx*(this.singleCardSize.width+spaceX),y:fristPosition.y};
     },
 
     /***获取牌所在区域 */
@@ -97,4 +100,16 @@ module.exports =  cc.Class({
         this._super();
         return 'SingleCardViewData';
     },
+
+    getSpaceX:function( cardSize ){
+        if( null == this.spaceX ){
+            this.spaceX = (960 - (13*cardSize.width) ) / 14
+        }    
+        return  this.spaceX;    
+    },
+
+    /***重新排版 */
+    resetPositionAll:function(){
+        this.objectGroup.resetPositionAll();
+    }
 });

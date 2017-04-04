@@ -12,14 +12,14 @@ module.exports =  cc.Class({
         //用于通过cardId查找当前所在行
         this.lineByCardIdList = {},
 
-        this.list = [[],[],[],[]],
+        this.cardList = [[],[],[],[]],
 
         /***当前可加行 */
         this.currLine = 0;
     },
     
     /***新增一张 */
-    add:function( baseObject ){
+    add:function( baseObject ){  
         this._super(baseObject);
         var line = baseObject.getLine();
         var cardId = baseObject.getCardId();
@@ -27,8 +27,8 @@ module.exports =  cc.Class({
             line = this.currLine;
         }
 
-        this.list[line] = this.list[line] || [];
-        this.list[line].push( cardId );
+        this.cardList[line] = this.cardList[line] || [];
+        this.cardList[line].push( cardId );
         this.lineByCardIdList[cardId] = line;
 
         if( this.getCardNumByLine(line) == this.getMaxNumByLine(line) ){
@@ -78,7 +78,7 @@ module.exports =  cc.Class({
      * 通过行获得当前行已有牌的数量
      */
     getCardNumByLine : function(currLine){
-        return _.size(this.list[currLine]);
+        return _.size(this.cardList[currLine]);
     },
 
     
@@ -94,8 +94,9 @@ module.exports =  cc.Class({
      * 通过卡牌id删除卡牌
      * 
      */
-    removeCardByCardId : function( cardId ){
-
+    removeByCardId : function( cardId ){
+       var line =  this.lineByCardIdList[cardId];  
+       var tmp = this.cardList[line];
     }, 
     
     /**
@@ -104,7 +105,7 @@ module.exports =  cc.Class({
      * return [1,4,2,5] 
      */
     getCardGroupByLine : function( currLine ){
-        return  this.list[currLine];
+        return  this.cardList[currLine];
     },
  
 });

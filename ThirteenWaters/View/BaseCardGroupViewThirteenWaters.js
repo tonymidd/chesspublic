@@ -9,8 +9,7 @@ var CollisionCheckCtr = require('./../CollisionCheckCtr');
 var BaseObjectDataGroup = require( './../../Public/BaseObjectDataGroup' ); 
 
 module.exports =  cc.Class({
-    extends: cc.Component,
-
+    extends: cc.Component, 
     properties: {
         eveLister : {            
             default:null,
@@ -31,17 +30,7 @@ module.exports =  cc.Class({
     onLoad:function(){
         /**单张牌的尺寸 */
         this.singleCardSize = {width:20,height:20};
-    },
-    
-    /**选择一张牌拾起时 */
-    pickUpCard:function( cardId,self ){
-        self.removeByCardId(cardId);
-    },
-
-    /**将拿起一张牌放下 */
-    putDown:function( cardId , self ){
-        self.addCard(cardId);
-    },  
+    }, 
 
     /***牌总数量*/
     getCardCnt : function(){

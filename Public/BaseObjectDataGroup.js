@@ -9,6 +9,8 @@ module.exports =  cc.Class({
     
     onLoad:function(){
         this.list = [];
+        //坐标列表上线为13
+        this.posList = [];
     },
 
     /**
@@ -16,7 +18,9 @@ module.exports =  cc.Class({
      * baseObject : 一个BaseObjectData或其子类对象
      */
     add : function( baseObject ){
-        this.list.push( baseObject )
+        var idx = _.size(this.list);
+        this.posList[idx] = baseObject.getPosition();
+        this.list.push( baseObject );
     },
  
     /***获取长度 */
@@ -34,4 +38,22 @@ module.exports =  cc.Class({
     remove : function( key ){
         //必须子类自己实现
     },
+
+    /***通过索引获取坐标 */
+    getPositionByIdx:function( idx ){
+        if( idx >= _.size(this.posList) ){
+            return null;
+        }
+        return this.posList[idx];
+    },
+
+    /***重新排版 */
+    resetPositionAll:function(){
+        var idx = 0;
+        var self = this;
+        _.each( this.list,function(baseObject){
+            baseObject.setPosition( self.getPositionByIdx(idx) );
+            ++idx;
+        } );
+    }
 });
