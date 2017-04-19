@@ -1,4 +1,17 @@
-var AnalysisCardsTool = function(ids){ 
+/*
+* 删除myDataList中rmDataList的数据
+**/
+function removeData(myDataList, rmDataList) {
+    var cloneData = JSON.parse(JSON.stringify(myDataList));
+
+    var i = 0; size = _.size(rmDataList);
+    for (i; i < size; ++i) {
+        cloneData = _.without(cloneData, rmDataList[i]);
+    } 
+    return cloneData;
+}
+
+var AnalysisCardsTool = function (ids) {
     this.initData(ids);
 }
 
@@ -83,7 +96,7 @@ pro.getCardsByType = function (_type) {
     return this.idsByTypeList[_type];
 };
 
-/**同花顺类型组*/
+/**类型组*/
 pro.canTHSIdsType = function () {
     var singleTypeGroupList = [];
     var i = 1, j = 4;
@@ -104,7 +117,7 @@ pro.canTHSIdsType = function () {
 pro.getResult = function (ids) {
     var groupList = [];
 
-    //后-同花顺
+    //后-
     var jData = this.canTHSIdsType();
     if (jData.cnt > 0) {
         var i = 0;
@@ -115,36 +128,58 @@ pro.getResult = function (ids) {
 };
 
 /*
-*通过数据获取同花顺数据 
+*通过数据获取
 *singleTypeIds:单个花色的id集合 如：[1,2,3,4,5,6,7,8]
 *return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
 */
-pro.getHTS = function ( singleTypeIds ) {
+pro.getTHS = function (singleTypeIds) {
     var num = _.size(singleTypeIds);
     //可能组成的种类数
     var mayBeGroupCnt = num - 4;
     var i = 0;
+    var canData = [];
     for (i; i < mayBeGroupCnt; ++i) {
+        var find = true;
+        //最小牌
+        var currTmp = singleTypeIds[i];
+
+        //表示从第二个数字比
         var a = i + 1;
         var b = i + 4;
-        var currTmp = singleTypeIds[i];
         for (a; a < b; ++a) {
-            if ( (currTmp + 1) = singleTypeIds[a]) {
+            //与后面的数组是否相连
+            if ((currTmp + 1) = singleTypeIds[a]) {
                 currTmp = singleTypeIds[a];
             } else {
+                find = false;
                 break;
             }
         }
+
+        if (find) {
+            var cards = [currTmp, currTmp + 1, currTmp + 2, currTmp + 3, currTmp + 4];
+            var surplusCard = removeData(this.ids, singleFind);
+            var jsData = {
+                //组合成功的牌
+                cards: cards,
+                //剩余的牌
+                surplusCard: surplusCard
+            }
+            canData.push(jsData);
+        }
     }
+    return canData;
 };
 
-/**
-*中5牌组合
-**/
-pro.getMiddGroup5 = function () {
-
+/*
+*通过数据获取
+*singleTypeIds:单个花色的id集合 如：[1,2,3,4,5,6,7,8]
+*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
+*/
+pro.get5Data = function ( type, singleTypeIds) {
+    
 };
-
+ 
 /*
 *   做数据分析
 *
