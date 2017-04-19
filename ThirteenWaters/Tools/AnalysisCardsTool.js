@@ -1,5 +1,7 @@
+var AnalysisCards = require( './AnalysisCards' );
+var consts = require( './consts' );
 /*
-* É¾³ımyDataListÖĞrmDataListµÄÊı¾İ
+* åˆ é™¤myDataListä¸­rmDataListçš„æ•°æ®
 **/
 function removeData(myDataList, rmDataList) {
     var cloneData = JSON.parse(JSON.stringify(myDataList));
@@ -16,138 +18,193 @@ var AnalysisCardsTool = function (ids) {
 }
 
 var pro = AnalysisCardsTool.prototype;
-
-/**
-* ids:[1,2,3,4,5,6,8,10]
+ 
+/*
+a,b,cï¼šå‰ä¸­å ã€typeç»„åˆç±»å‹ cardsç»„åˆçš„ç‰Œ
+return
+[ 
+    {a:{type:1,cards:[1,2,3,4,5]},b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]}},
+    {a:{type:1,cards:[1,2,3,4,5]},b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]}},
+    {a:{type:1,cards:[1,2,3,4,5]},b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]}},
+    {a:{type:1,cards:[1,2,3,4,5]},b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]}},
+]
 */
-pro.initData = function ( ids ) {
-    //´ÓĞ¡µ½´óÅÅĞò
-    this.ids = _.sortBy(ids, function (num) {
-        return num;
-    })
+pro.getAllResult = function(ids){
 
-    //Èç[{id:1,number:1,cardType:1}]
-    this.cards = [];
-
-    //key: type
-    //value:cnt
-    //Èç{1:3,2:5,3:5}
-    this.cntByTypeList = {};
-    
-    //Í¬»¨É«µÄ¼¯ºÏÔÚÒ»Æğ
-    //key: type
-    //value:[1,2,3,4]
-    //Èç{1:3,2:5,3:5}
-    this.idsByTypeList = {};
-
-    //key: type
-    //value:
-    //Èç
-    this.cardsByTypeList = {};
-
-    _.each(this.ids, function (id) {
-        var data = {};
-        data.id = id;
-        data.number = 1;
-        data.cardType = 1;
-        self.cards.push(data);
-
-        if (null == self.cntByTypeList[data.cardType]) {
-            self.cntByTypeList[data.cardType] = 0;
-        }
-        self.cntByTypeList[data.cardType]++;
-
-        if (null == self.idsByTypeList[data.cardType]) {
-            self.idsByTypeList[data.cardType] = [];
-        }
-        self.idsByTypeList[data.cardType].push(id);
-
-        if (null == self.cardsByTypeList[data.cardType]) {
-            self.cardsByTypeList[data.cardType] = [];
-        }
-        self.cardsByTypeList[data.cardType].push(data);
-    })
-};
-
-/**
-* Í¨¹ıÀàĞÍ»ñÈ¡´ËÀàĞÍµÄ×ÜÊıÁ¿
-* _type : 0-3
-*/
-pro.getNumByType = function (_type) {
-    var ids = this.getIdsByType(_type);
-    return _.size(ids);
-};
-
-/**
-* Í¨¹ıÀàĞÍ»ñÈ¡´ËÀàĞÍµÄ×ÜÊıÁ¿
-* _type : 0-3
-* return [1,2,3,4,5]
-*/
-pro.getIdsByType = function (_type) {
-    return this.idsByTypeList[_type];
-};
-
-/**
-* Í¨¹ıÀàĞÍ»ñÈ¡´ËÀàĞÍµÄ×ÜÊıÁ¿
-* _type : 0-3
-* return [{id:1,number:1,cardType:1}]
-*/
-pro.getCardsByType = function (_type) {
-    return this.idsByTypeList[_type];
-};
-
-/**ÀàĞÍ×é*/
-pro.canTHSIdsType = function () {
-    var singleTypeGroupList = [];
-    var i = 1, j = 4;
-    var cnt = 0;
-    for (i; i <= j; ++i) {
-        var singleTypeGroup = this.getIdsByType(i);
-        if (_.size(singleTypeGroup) >= 5) {
-            singleTypeGroupList.push(singleTypeGroup);
-            cnt++;
-        }
-    }
-    return { cnt: cnt, singleTypeGroupList: singleTypeGroupList };
 };
 
 /*
-* return [{type:1,cards[1,2,3,4]},{type:1,cards[1,2,3,4]},{type:1,cards[1,2,3,4]}]
+a,b,cï¼šå‰ä¸­å ã€typeç»„åˆç±»å‹ cardsç»„åˆçš„ç‰Œ
+return
+[ 
+    {a:{type:1,cards:[1,2,3,4,5]},bcList:[ [b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]} ]],[b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]} ]]   },
+    {a:{type:1,cards:[1,2,3,4,5]},bcList:[ [b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]} ]],[b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]} ]]   },
+]
 */
-pro.getResult = function (ids) {
-    var groupList = [];
 
-    //ºó-
-    var jData = this.canTHSIdsType();
+pro.get3Data = function( groupList , cardType , analysisCards ){
+    var jData = null;
+    if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUASHUN){ 
+        jData = analysisCards.canTHSIdsType();
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.TIEZHI){
+
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.HULU){
+        
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUA){
+        
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.SHUNZI){
+        
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.SANTIAO){
+        
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.LIANGDUI){
+        
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.YIDUI){
+        
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.SANPAI){
+        
+    }
+
     if (jData.cnt > 0) {
         var i = 0;
         for (i; i < jData.cnt; ++i) {
+            var thsList = null;           
+            if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUASHUN){ 
+                thsList = this.getSingleTypeTHS( jData.singleTypeGroupList[i] );
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.TIEZHI){
 
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.HULU){
+                
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUA){
+                
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.SHUNZI){
+                
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.SANTIAO){
+                
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.LIANGDUI){
+                
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.YIDUI){
+                
+            }else if( cardType==consts.SHISANSHUI_ORDINARY.SANPAI){
+                
+            }
+
+            if( _.size(thsList) > 0 ){
+                for(var k = 0; k < _.size(thsList) ; ++k){                    
+                    var tmpGroup = {};
+                    groupList.push(tmpGroup);
+                    
+                    //åå’š
+                    tmpGroup.a =  thsList[k].cards;
+ 
+                    //ä¸­å’šå‰å’š ç»„åˆ 
+                    tmpGroup.bcList = this.getBCList(thsList[k].surplusCard);
+                } 
+            }
         }
     }  
+}
+
+pro.getResult = function (ids) {
+    var groupList = [];
+
+    var analysisCards = new AnalysisCards(ids);
+
+    //åŒèŠ±é¡º   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.TONGHUASHUN,analysisCards);
+
+    //é“æ”¯   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.TIEZHI,analysisCards); 
+
+    //è‘«èŠ¦   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.HULU,analysisCards);
+
+    //åŒèŠ±   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.TONGHUA,analysisCards);
+
+    //é¡ºå­   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.SHUNZI,analysisCards);
+
+    //ä¸‰æ¡   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.SANTIAO,analysisCards);
+
+    //ä¸¤å¯¹   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.LIANGDUI,analysisCards);
+
+    //ä¸€å¯¹   ä¸ºæœ€å¤§æƒ…å†µ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.YIDUI,analysisCards);
+
+    //æ•£ç‰Œ
+    this.get3Data(groupList,consts.SHISANSHUI_ORDINARY.SANPAI,analysisCards);
+
+    return  groupList;
+};
+
+
+/***è·å–ä¸­ã€å‰å’šæ•°æ®
+ * return [ [b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]} ]],[b:{type:2,cards:[1,2,3,4,5]},c:{type:3,cards:[1,2,3]} ]] 
+ */
+pro.getBCList = function( ids ){
+    var groupList = [];
+    var analysisCards = new AnalysisCards(ids);
+    //åŒèŠ±é¡º
+    var jData = analysisCards.canTHSIdsType();
+    if (jData.cnt > 0) {
+        var i = 0;
+        for (i; i < jData.cnt; ++i) {
+            var thsList = this.getSingleTypeTHS( jData.singleTypeGroupList[i] );
+            if( _.size(thsList) > 0 ){
+                for(var k = 0; k < _.size(thsList) ; ++k){                    
+                    var tmpGroup = {};
+                    groupList.push(tmpGroup);
+                    
+                    //ä¸­å’š
+                    tmpGroup.b =  thsList[k].cards;
+ 
+                    //å‰å’š
+                    tmpGroup.c = thsList[k].surplusCard;
+                } 
+            }
+        }
+    } 
+
+
+    //é“æ”¯   
+
+    //è‘«èŠ¦   
+
+    //è‘«èŠ¦   
+
+    //é¡ºå­   
+
+    //ä¸‰æ¡   
+
+    //ä¸¤å¯¹   
+
+    //ä¸€å¯¹   
+    return  groupList;
 };
 
 /*
-*Í¨¹ıÊı¾İ»ñÈ¡
-*singleTypeIds:µ¥¸ö»¨É«µÄid¼¯ºÏ Èç£º[1,2,3,4,5,6,7,8]
+*å•ä¸ªèŠ±è‰²å¯èƒ½ç»„åˆå‡ºçš„åŒèŠ±é¡º   (è®¡ç®—  ---åå’š----)
+*singleTypeIds:å•ä¸ªèŠ±è‰²çš„idé›†åˆ å¦‚ï¼š[1,2,3,4,5,6,7,8]
 *return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
 */
-pro.getTHS = function (singleTypeIds) {
+pro.getSingleTypeTHS = function (singleTypeIds) {
     var num = _.size(singleTypeIds);
-    //¿ÉÄÜ×é³ÉµÄÖÖÀàÊı
+    //å¯èƒ½ç»„æˆçš„ç§ç±»æ•°
     var mayBeGroupCnt = num - 4;
     var i = 0;
     var canData = [];
     for (i; i < mayBeGroupCnt; ++i) {
         var find = true;
-        //×îĞ¡ÅÆ
+        //æœ€å°ç‰Œ
         var currTmp = singleTypeIds[i];
 
-        //±íÊ¾´ÓµÚ¶ş¸öÊı×Ö±È
+        //è¡¨ç¤ºä»ç¬¬äºŒä¸ªæ•°å­—æ¯”
         var a = i + 1;
         var b = i + 4;
         for (a; a < b; ++a) {
-            //ÓëºóÃæµÄÊı×éÊÇ·ñÏàÁ¬
+            //ä¸åé¢çš„æ•°ç»„æ˜¯å¦ç›¸è¿
             if ((currTmp + 1) = singleTypeIds[a]) {
                 currTmp = singleTypeIds[a];
             } else {
@@ -160,9 +217,9 @@ pro.getTHS = function (singleTypeIds) {
             var cards = [currTmp, currTmp + 1, currTmp + 2, currTmp + 3, currTmp + 4];
             var surplusCard = removeData(this.ids, singleFind);
             var jsData = {
-                //×éºÏ³É¹¦µÄÅÆ
+                //ç»„åˆæˆåŠŸçš„ç‰Œ
                 cards: cards,
-                //Ê£ÓàµÄÅÆ
+                //å‰©ä½™çš„ç‰Œ
                 surplusCard: surplusCard
             }
             canData.push(jsData);
@@ -170,41 +227,34 @@ pro.getTHS = function (singleTypeIds) {
     }
     return canData;
 };
+ 
 
 /*
-*Í¨¹ıÊı¾İ»ñÈ¡
-*singleTypeIds:µ¥¸ö»¨É«µÄid¼¯ºÏ Èç£º[1,2,3,4,5,6,7,8]
+*å•ä¸ªèŠ±è‰²å¯èƒ½ç»„åˆå‡ºçš„ã€é“æ”¯ã€‘   (è®¡ç®—  ---åå’š----)
+*singleTypeIds:å•ä¸ªèŠ±è‰²çš„idé›†åˆ å¦‚ï¼š[1,2,3,4,5,6,7,8]
 *return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
 */
-pro.get5Data = function ( type, singleTypeIds) {
-    
+pro.getSingleTypeTZ = function (singleTypeIds) { 
+    var canData = []; 
+    return canData;
 };
- 
+
 /*
-*   ×öÊı¾İ·ÖÎö
-*
+*å•ä¸ªèŠ±è‰²å¯èƒ½ç»„åˆå‡ºçš„ã€è‘«èŠ¦ã€‘   (è®¡ç®—  ---åå’š----)
+*singleTypeIds:å•ä¸ªèŠ±è‰²çš„idé›†åˆ å¦‚ï¼š[1,2,3,4,5,6,7,8]
+*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
 */
-var DoAnalysisCards = function () {
-
+pro.getSingleTypeHL = function (singleTypeIds) { 
+    var canData = []; 
+    return canData;
 };
 
-var doPro = DoAnalysisCards.prototype;
-
-/**
-*   »ñÈ¡¼ÆËã½á¹û
-*   return [            
-                Ç°¡¢ÖĞ¡¢ºó¶Ù
-                [{type:1,cards[1,2,3,4]},{type:1,cards[1,2,3,4]},{type:1,cards[1,2,3,4]}],
-                [{type:1,cards[1,2,3,4]},{type:1,cards[1,2,3,4]},{type:1,cards[1,2,3,4]}],
-           ]
+/*
+*å•ä¸ªèŠ±è‰²å¯èƒ½ç»„åˆå‡ºçš„ã€åŒèŠ±ã€‘   (è®¡ç®—  ---åå’š----)
+*singleTypeIds:å•ä¸ªèŠ±è‰²çš„idé›†åˆ å¦‚ï¼š[1,2,3,4,5,6,7,8]
+*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
 */
-doPro.getResult = function (ids) {
-    var result = [];
-    
-    var i = 9, j = 0;
-    for (i ; i > 0 ; --i) {
-        var analysisCardsTool = new AnalysisCardsTool(ids);
-
-    }
-
-}
+pro.getSingleTypeTH = function (singleTypeIds) { 
+    var canData = []; 
+    return canData;
+};
