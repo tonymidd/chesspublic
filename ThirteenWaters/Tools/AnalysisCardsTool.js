@@ -44,50 +44,29 @@ return
 
 pro.get3Data = function( groupList , cardType , analysisCards ){
     var jData = null;
+    var ids = analysisCards.getIds();
     if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUASHUN){ 
         jData = analysisCards.canTHSIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.TIEZHI){
-
+        jData = analysisCards.canTZIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.HULU){
-        
+        jData = analysisCards.canHLIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUA){
-        
+        jData = analysisCards.canTHIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.SHUNZI){
-        
+        jData = analysisCards.canSZIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.SANTIAO){
-        
+        jData = analysisCards.canSTIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.LIANGDUI){
-        
+        jData = analysisCards.canLDIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.YIDUI){
-        
-    }else if( cardType==consts.SHISANSHUI_ORDINARY.SANPAI){
-        
+        jData = analysisCards.canYDIdsType();
     }
 
     if (jData.cnt > 0) {
-        var i = 0;
+        var i = 0;        
         for (i; i < jData.cnt; ++i) {
-            var thsList = null;           
-            if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUASHUN){ 
-                thsList = this.getSingleTypeTHS( jData.singleTypeGroupList[i] );
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.TIEZHI){
-
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.HULU){
-                
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.TONGHUA){
-                
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.SHUNZI){
-                
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.SANTIAO){
-                
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.LIANGDUI){
-                
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.YIDUI){
-                
-            }else if( cardType==consts.SHISANSHUI_ORDINARY.SANPAI){
-                
-            }
-
+            var thsList = this.getSingleTypeTHS( cardType, ids, jData.singleTypeGroupList[i]);
             if( _.size(thsList) > 0 ){
                 for(var k = 0; k < _.size(thsList) ; ++k){                    
                     var tmpGroup = {};
@@ -184,77 +163,17 @@ pro.getBCList = function( ids ){
     return  groupList;
 };
 
-/*
-*单个花色可能组合出的同花顺   (计算  ---后咚----)
-*singleTypeIds:单个花色的id集合 如：[1,2,3,4,5,6,7,8]
-*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
-*/
-pro.getSingleTypeTHS = function (singleTypeIds) {
-    var num = _.size(singleTypeIds);
-    //可能组成的种类数
-    var mayBeGroupCnt = num - 4;
-    var i = 0;
+pro.getSingleData = function ( type , ids, singleTypeIds) {
     var canData = [];
-    for (i; i < mayBeGroupCnt; ++i) {
-        var find = true;
-        //最小牌
-        var currTmp = singleTypeIds[i];
-
-        //表示从第二个数字比
-        var a = i + 1;
-        var b = i + 4;
-        for (a; a < b; ++a) {
-            //与后面的数组是否相连
-            if ((currTmp + 1) = singleTypeIds[a]) {
-                currTmp = singleTypeIds[a];
-            } else {
-                find = false;
-                break;
-            }
-        }
-
-        if (find) {
-            var cards = [currTmp, currTmp + 1, currTmp + 2, currTmp + 3, currTmp + 4];
-            var surplusCard = removeData(this.ids, singleFind);
-            var jsData = {
-                //组合成功的牌
-                cards: cards,
-                //剩余的牌
-                surplusCard: surplusCard
-            }
-            canData.push(jsData);
-        }
+    var surplusCard = removeData(ids, singleTypeIds);
+    var jsData = {
+        type:type,
+        //组合成功的牌
+        cards: singleTypeIds,
+        //剩余的牌
+        surplusCard: surplusCard
     }
+    canData.push(jsData);
     return canData;
-};
+}
  
-
-/*
-*单个花色可能组合出的【铁支】   (计算  ---后咚----)
-*singleTypeIds:单个花色的id集合 如：[1,2,3,4,5,6,7,8]
-*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
-*/
-pro.getSingleTypeTZ = function (singleTypeIds) { 
-    var canData = []; 
-    return canData;
-};
-
-/*
-*单个花色可能组合出的【葫芦】   (计算  ---后咚----)
-*singleTypeIds:单个花色的id集合 如：[1,2,3,4,5,6,7,8]
-*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
-*/
-pro.getSingleTypeHL = function (singleTypeIds) { 
-    var canData = []; 
-    return canData;
-};
-
-/*
-*单个花色可能组合出的【同花】   (计算  ---后咚----)
-*singleTypeIds:单个花色的id集合 如：[1,2,3,4,5,6,7,8]
-*return [{type:1,cards[1,2,3,5,6],surplusCard:[1,2,3,4,5,6,7]}]
-*/
-pro.getSingleTypeTH = function (singleTypeIds) { 
-    var canData = []; 
-    return canData;
-};
