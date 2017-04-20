@@ -4,6 +4,24 @@ var AnalysisCards = function (ids) {
     this.initData(ids);
 }
 
+/*
+* 删除myDataList中rmDataList的数据
+**/
+function removeData(myDataList, rmDataList) {
+    var cloneData = JSON.parse(JSON.stringify(myDataList));
+
+    var i = 0; size = _.size(rmDataList);
+    for (i; i < size; ++i) {
+        cloneData = _.without(cloneData, rmDataList[i]);
+    } 
+    return cloneData;
+}
+
+function doCloneData(jData){
+    return JSON.parse(JSON.stringify(jData));
+}
+
+
 var pro = AnalysisCards.prototype;
 
 /**
@@ -106,6 +124,7 @@ pro.getIds = function(){
 
 /**可组合出【同花顺】的数据*/
 pro.canTHSIdsType = function () {
+    var self = this; 
     var singleTypeGroupList = [];
     var i = 1, j = 4; 
     for (i; i <= j; ++i) {
@@ -145,10 +164,13 @@ pro.canTHSIdsType = function () {
 
 /**可组合出【铁支】4+1比如[1,1,1,1,2]的数据*/
 pro.canTZIdsType = function () {
+    var self = this; 
     var singleTypeGroupList = [];  
     _.each( this.sameCardsByNumList,function(tmpIds){
         var size =_.size(tmpIds);
-        if( size == 4 ){
+        if( size >= 4 ){
+            var tmp = removeData(self.ids,tmpIds);
+            tmpIds.push( tmp[0] );
             singleTypeGroupList.push(tmpIds); 
         }
     } )    
@@ -157,18 +179,33 @@ pro.canTZIdsType = function () {
 
 /**可组合出【葫芦】3+2比如[1,1,1,2,2]的数据*/
 pro.canHLIdsType = function () {
+    var self = this;
     var singleTypeGroupList = []; 
-    _.each(this.sameCardsByNumList, function (tmpIds) {
+    //首先是找三条
+    _.each(this.sameCardsByNumList, function (tmpIds,numA) {
         var size = _.size(tmpIds);
-        if (size == 3) {
-            singleTypeGroupList.push(tmpIds);            
-        }
+        if (size >= 3) {
+            var tmp = [];
+            tmp.push(tmpIds[0])
+            tmp.push(tmpIds[1])
+            tmp.push(tmpIds[2]) 
+            //再找对子
+            _.each(this.sameCardsByNumList, function (tmpIdsB,numB) {
+                var sizeB = _.size(tmpIdsB);
+                if (sizeB >= 2 && numA!=numB) {
+                    tmp.push(tmpIdsB[0]) 
+                    tmp.push(tmpIdsB[1]) 
+                    singleTypeGroupList.push(tmp);           
+                } 
+            })            
+        } 
     })
     return { cnt: _.size(singleTypeGroupList), singleTypeGroupList: singleTypeGroupList };
 };
 
 /**可组合出【同花】的数据*/
 pro.canTHIdsType = function () {
+    var self = this;
     var singleTypeGroupList = [];
     var i = 1, j = 4;
     for (i; i <= j; ++i) {
@@ -190,6 +227,7 @@ pro.canTHIdsType = function () {
 
 /**可组合出【顺子】的数据*/
 pro.canSZIdsType = function () {
+    var self = this;
     var singleTypeGroupList = [];  
     for (var i = 1; i <= 9 ; ++i) {
         var isFind = true;
@@ -213,11 +251,28 @@ pro.canSZIdsType = function () {
 
 /**可组合出【三条】的数据*/
 pro.canSTIdsType = function () {
-    return this.canHLIdsType();
+        var self = this;
+    var singleTypeGroupList = []; 
+    //首先是找三条
+    _.each(this.sameCardsByNumList, function (tmpIds,numA) {
+        var size = _.size(tmpIds);
+        if (size >= 3) {
+            var okData = [];
+            okData.push(tmpIds[0])
+            okData.push(tmpIds[1])
+            okData.push(tmpIds[2]) 
+            var tmp = removeData(self.ids,okData);
+            okData.push( tmp[0] );
+            okData.push( tmp[1] );
+            singleTypeGroupList.push(okData);      
+        } 
+    })
+    return { cnt: _.size(singleTypeGroupList), singleTypeGroupList: singleTypeGroupList };
 };
 
 /**可组合出【两对】的数据*/
 pro.canLDIdsType = function () {
+    var self = this;
     var singleTypeGroupList = [];
 
     var tmpGroup = [];
@@ -238,6 +293,8 @@ pro.canLDIdsType = function () {
                 okData.push(tmpGroup[j][0]);
                 okData.push(tmpGroup[j][1]);
             }
+            var tmp = removeData(self.ids,okData);
+            okData.push( tmp[0] );
             singleTypeGroupList.push(okData);
         }
     }
@@ -247,20 +304,28 @@ pro.canLDIdsType = function () {
 
 /**可组合出【一对】的数据*/
 pro.canYDIdsType = function () {
-    var singleTypeGroupList = []; 
-
-    var tmpGroup = [];
+    var self = this;
+    var singleTypeGroupList = [];  
     _.each(this.sameCardsByNumList, function (cards) {
         if (_.size(cards) >= 2) {
-            tmpGroup.push(cards);
+            var okData = [];
+            okData.push(cards[0])         
+            okData.push(cards[1])
+            var tmp = removeData(self.ids,okData);
+            okData.push( tmp[0] ); 
+            okData.push( tmp[1] );
+            okData.push( tmp[2] );
+            singleTypeGroupList.push(okData);
         }
-    })
-
-    var size = _.size(tmpGroup);
-    if( size > 0 ){
-
-    }
+    }) 
     return { cnt: _.size(singleTypeGroupList), singleTypeGroupList: singleTypeGroupList };
 };
 
+
+/**可组合出【散牌】的数据*/
+pro.canSPIdsType = function () {
+    var singleTypeGroupList = []; 
+    singleTypeGroupList.push( [this.ids[0],this.ids[1],this.ids[2],this.ids[3],this.ids[4]] )
+    return { cnt: _.size(singleTypeGroupList), singleTypeGroupList: singleTypeGroupList };
+};
 module.exports = AnalysisCards;
