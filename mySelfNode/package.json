@@ -1,0 +1,12 @@
+{
+    "name": "pomelo-nodejs-client",
+    "version": "0.0.1",
+    "description": "A pomelo nodejs client",
+    "author": "<kilua626@gmail.com>",
+    "dependencies": {
+        "underscore": ">=1.5.2"
+    },
+    "devDependencies": {
+        "underscore": ">=1.5.2"
+    }
+}
