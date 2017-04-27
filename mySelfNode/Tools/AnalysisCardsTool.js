@@ -85,7 +85,7 @@ pro.getResult = function (ids) {
     this.getBestCardGroup(groupList, consts.SHISANSHUI_ORDINARY.YIDUI, analysisCards);
 
     //散牌
-    //this.getBestCardGroup(groupList, consts.SHISANSHUI_ORDINARY.SANPAI, analysisCards);
+    this.getBestCardGroup(groupList, consts.SHISANSHUI_ORDINARY.SANPAI, analysisCards);
 
     return groupList;
 };
@@ -119,7 +119,10 @@ pro.getBestCardGroup = function( groupList , cardType , analysisCards ){
         jData = analysisCards.canLDIdsType();
     }else if( cardType==consts.SHISANSHUI_ORDINARY.YIDUI){
         jData = analysisCards.canYDIdsType();
+    }else if( cardType==consts.SHISANSHUI_ORDINARY.SANPAI){
+        jData = analysisCards.canSPIdsType();
     }
+
 
     if (jData.cnt > 0) {
         var i = 0;        
@@ -131,7 +134,7 @@ pro.getBestCardGroup = function( groupList , cardType , analysisCards ){
                     groupList.push(tmpGroup);
                     
                     //后咚
-                    tmpGroup.a =  thsList[k].cards;
+                    tmpGroup.a = {type:cardType,cards:thsList[k].cards};
  
                     //中咚前咚 组合 
                     tmpGroup.bcList = [];
@@ -143,6 +146,7 @@ pro.getBestCardGroup = function( groupList , cardType , analysisCards ){
                     this.getBCList( tmpGroup.bcList , consts.SHISANSHUI_ORDINARY.SANTIAO , thsList[k].surplusCard);
                     this.getBCList( tmpGroup.bcList , consts.SHISANSHUI_ORDINARY.LIANGDUI , thsList[k].surplusCard);
                     this.getBCList( tmpGroup.bcList , consts.SHISANSHUI_ORDINARY.YIDUI , thsList[k].surplusCard);
+                    this.getBCList( tmpGroup.bcList , consts.SHISANSHUI_ORDINARY.SANPAI , thsList[k].surplusCard);
                      
                 } 
             }
@@ -173,6 +177,8 @@ pro.getBCList = function( groupList , cardType , ids ){
         jData = analysisCards.canLDIdsType();
     } else if (cardType == consts.SHISANSHUI_ORDINARY.YIDUI) {
         jData = analysisCards.canYDIdsType();
+    } else if (cardType == consts.SHISANSHUI_ORDINARY.SANPAI) {
+        jData = analysisCards.canSPIdsType();
     }
 
     if (jData.cnt > 0) {
@@ -185,10 +191,10 @@ pro.getBCList = function( groupList , cardType , ids ){
                     groupList.push(tmpGroup);
 
                     //中咚
-                    tmpGroup.b = thsList[k].cards;
+                    tmpGroup.b = {type:cardType,cards:thsList[k].cards};  
 
                     //前咚
-                    tmpGroup.c = thsList[k].surplusCard;
+                    tmpGroup.c = {type:consts.SHISANSHUI_ORDINARY.SANPAI,cards:thsList[k].surplusCard};
                 }
             }
         }
