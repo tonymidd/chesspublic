@@ -18,7 +18,7 @@ var MsgWait = cc.Class({
 
         actions.push(cc.delay( this.getAutoCloseTime() ));
 
-        actions.push(cc.CALLFNC( function(){
+        actions.push(cc.callFunc( function(){
             self.close();
         } ));
 
